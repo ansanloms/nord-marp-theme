@@ -1,0 +1,71 @@
+/*! @theme nord */
+
+@use "nord/src/sass/nord.scss" as *;
+@import-theme "default";
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+JP&display=swap");
+@import url("nord-highlightjs/dist/nord.css");
+@import url("prism-themes/themes/prism-nord.css");
+
+section {
+  font-family: "Noto Sans JP", sans-serif;
+  color: $nord4;
+  background-color: $nord1;
+
+  &.split {
+    display: grid;
+    grid-template-columns: repeat(2, calc(100% / 2));
+    grid-gap: 1rem;
+    align-content: center;
+  }
+
+  &.lead {
+    display: grid;
+    align-items: center;
+    justify-items: center;
+  }
+}
+
+h1,
+h2 {
+  color: $nord9;
+}
+
+h3,
+h4,
+h5,
+h6 {
+  color: $nord4;
+}
+
+blockquote {
+  color: $nord7;
+  border-color: $nord4;
+}
+
+table,
+th,
+td {
+  border-color: $nord4;
+}
+
+th {
+  background-color: $nord3;
+}
+
+td {
+  background-color: $nord1;
+}
+
+pre {
+  color: $nord4;
+  background-color: $nord0;
+}
+
+a {
+  color: $nord8;
+}
+
+code {
+  color: $nord8;
+  background-color: $nord0;
+}

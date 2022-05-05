@@ -1,0 +1,42 @@
+{
+  "name": "nord-marp-theme",
+  "description": "Nord theme for Marp.",
+  "version": "1.0.0",
+  "author": "ansanloms",
+  "license": "MIT",
+  "main": "./dist/nord.css",
+  "scripts": {
+    "lint": "run-s --continue-on-error lint:*",
+    "lint:prettier": "prettier --loglevel warn --check .",
+    "lint:stylelint": "stylelint \"**/*.scss\"",
+    "lint:eslint": "eslint --cache --ext \".js\" .",
+    "fix": "run-p --continue-on-error fix:*",
+    "fix:prettier": "prettier --loglevel warn --write .",
+    "fix:stylelint": "stylelint \"**/*.scss\" --fix",
+    "fix:eslint": "eslint --cache --ext \".js\" --fix .",
+    "build": "node ./bin/build.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ansanloms/nord-marp-theme.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ansanloms/nord-marp-theme/issues"
+  },
+  "homepage": "https://github.com/ansanloms/nord-marp-theme#readme",
+  "devDependencies": {
+    "esbuild": "^0.14.38",
+    "esbuild-sass-plugin": "^2.2.6",
+    "eslint": "^8.14.0",
+    "eslint-config-google": "^0.14.0",
+    "eslint-config-prettier": "^8.5.0",
+    "nord": "^0.2.1",
+    "nord-highlightjs": "^0.1.0",
+    "npm-run-all": "^4.1.5",
+    "prettier": "^2.6.2",
+    "prism-themes": "^1.9.0",
+    "stylelint": "^14.8.2",
+    "stylelint-config-recess-order": "^3.0.0",
+    "stylelint-config-standard-scss": "^3.0.0"
+  }
+}
