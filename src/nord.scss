@@ -10,19 +10,6 @@ section {
   font-family: "Noto Sans JP", sans-serif;
   color: $nord4;
   background-color: $nord1;
-
-  &.split {
-    display: grid;
-    grid-template-columns: repeat(2, calc(100% / 2));
-    grid-gap: 1rem;
-    align-content: center;
-  }
-
-  &.lead {
-    display: grid;
-    align-items: center;
-    justify-items: center;
-  }
 }
 
 h1,
