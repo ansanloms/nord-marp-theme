@@ -14,7 +14,8 @@
     "fix:prettier": "prettier --loglevel warn --write .",
     "fix:stylelint": "stylelint \"**/*.scss\" --fix",
     "fix:eslint": "eslint --cache --ext \".js\" --fix .",
-    "build": "node ./bin/build.js"
+    "build": "node ./bin/build.js",
+    "watch": "node ./bin/build.js watch"
   },
   "repository": {
     "type": "git",
