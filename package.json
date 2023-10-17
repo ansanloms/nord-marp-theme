@@ -17,12 +17,12 @@
     "lint": "run-s --continue-on-error lint:*",
     "lint:prettier": "prettier --log-level warn --check .",
     "lint:stylelint": "stylelint \"**/*.scss\"",
-    "lint:eslint": "eslint --ext \".js\" .",
+    "lint:eslint": "eslint --ext \".js,.mjs\" .",
     "fix": "run-p --continue-on-error fix:*",
     "fix:prettier": "prettier --log-level warn --write .",
     "fix:stylelint": "stylelint \"**/*.scss\" --fix",
-    "fix:eslint": "eslint --ext \".js\" --fix .",
-    "build": "node ./bin/build.js",
+    "fix:eslint": "eslint --ext \".js,.mjs\" --fix .",
+    "build": "node ./bin/build.mjs",
     "postinstall": "npm run build"
   },
   "dependencies": {
