@@ -1,10 +1,12 @@
-/*! @theme nord */
+/*!
+@theme nord
+*/
 
 @use "nord/src/sass/nord.scss" as *;
 @import-theme "default";
-@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+JP&display=swap");
-@import url("nord-highlightjs/dist/nord.css");
-@import url("prism-themes/themes/prism-nord.css");
+@import "https://fonts.googleapis.com/css2?family=Noto+Sans+JP&display=swap";
+@import "nord-highlightjs/dist/nord.css";
+@import "prism-themes/themes/prism-nord.css";
 
 section {
   font-family: "Noto Sans JP", sans-serif;
