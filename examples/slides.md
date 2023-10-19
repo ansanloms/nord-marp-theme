@@ -1,3 +1,9 @@
+---
+lang: en
+title: nord-marp-theme
+author: ansanloms
+---
+
 # nord-marp-theme
 
 [Nord](https://www.nordtheme.com/) theme for [Marp](https://marp.app/).
@@ -74,6 +80,8 @@ sayHello("John");
 
 ---
 
+## Prism.js
+
 You can use [Prism.js](https://prismjs.com/) by writing the following in `marp.config.js` .
 
 ```javascript
@@ -89,6 +97,77 @@ module.exports = {
 };
 ```
 
-> Reference:
->
-> <https://github.com/highlightjs/highlightjs-structured-text/issues/9#issuecomment-686326994>
+<!--
+
+Reference:
+
+<https://github.com/highlightjs/highlightjs-structured-text/issues/9#issuecomment-686326994>
+
+-->
+
+---
+
+# Note
+
+You can use Note by writing the following in `marp.config.js` .
+
+```javascript
+module.exports = {
+  engine: ({ marp }) => {
+    marp.use(require("markdown-it-container"), "note", {
+      render: (tokens, idx) => {
+        const className = tokens[idx].info.trim().slice("note".length + 1);
+        return tokens[idx].nesting === 1
+          ? `<div class="note ${className}">`
+          : `</div>`;
+      },
+    });
+
+    return marp;
+  },
+};
+```
+
+---
+
+::: note
+Tip. (Default)
+:::
+
+```txt
+::: note
+Tip. (Default)
+:::
+```
+
+::: note info
+Info.
+:::
+
+```txt
+::: note info
+Info.
+:::
+```
+
+---
+
+::: note warning
+Warning.
+:::
+
+```txt
+::: note warning
+Warning.
+:::
+```
+
+::: note danger
+Danger.
+:::
+
+```txt
+::: note danger
+Danger.
+:::
+```
