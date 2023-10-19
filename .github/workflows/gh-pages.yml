@@ -21,8 +21,9 @@ jobs:
         with:
           node-version: 18.x
 
-      - name: Build examples
-        run: npm ci && npm run build && npx @marp-team/marp-cli@latest ./examples/slides.md --theme ./dist/nord.css --config ./examples/marp.config.js --output ./dist/output.html
+      - run: npm ci
+      - run: npm run build
+      - run: npx @marp-team/marp-cli@latest ./examples/slides.md --theme ./dist/nord.css --config ./examples/marp.config.js --output ./dist/index.html
 
       - name: Deploy
         uses: crazy-max/ghaction-github-pages@v2.0.1
