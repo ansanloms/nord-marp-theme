@@ -4,6 +4,4 @@
 
 ## Example
 
-```sh
-npx @marp-team/marp-cli@latest ./examples/slides.md --theme ./dist/nord.css --config ./examples/marp.config.js --output ./dist/output.html
-```
+<https://ansanloms.github.io/nord-marp-theme/>
