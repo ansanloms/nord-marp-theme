@@ -5,8 +5,6 @@ const mime = require("mime-types");
 module.exports = {
   html: true,
 
-  theme: path.join(__dirname, "../dist/techfirm.css"),
-
   engine: ({ marp }) => {
     marp
       .use(require("markdown-it-container"), "note", {
