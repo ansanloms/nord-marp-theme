@@ -5,11 +5,15 @@
 @use "nord/src/sass/nord.scss" as *;
 @import-theme "default";
 @import "https://fonts.googleapis.com/css2?family=Noto+Sans+JP&display=swap";
+@import "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined";
 @import "nord-highlightjs/dist/nord.css";
 @import "prism-themes/themes/prism-nord.css";
 
+$font-default: "Noto Sans JP";
+$font-icon: "Material Symbols Outlined";
+
 section {
-  font-family: "Noto Sans JP", sans-serif;
+  font-family: $font-default;
   color: $nord4;
   background-color: $nord1;
 }
@@ -57,4 +61,67 @@ a {
 code {
   color: $nord8;
   background-color: $nord0;
+}
+
+.note {
+  position: relative;
+  padding: 16px 16px 0 32px;
+  margin: 0 0 16px 15px;
+  font-size: 0.8em;
+  background-color: $nord2;
+  border-left: 4px solid $nord14;
+
+  & h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    margin-top: 0;
+  }
+
+  &::before {
+    position: absolute;
+    top: calc(50% - 20px);
+    left: -22px;
+    display: grid;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    font-family: $font-icon;
+    font-size: 24px;
+    font-weight: bold;
+    color: $nord0;
+    content: "lightbulb";
+    background-color: $nord14;
+    border-radius: 20px;
+  }
+
+  &.info {
+    border-left-color: $nord10;
+
+    &::before {
+      content: "info";
+      background-color: $nord10;
+    }
+  }
+
+  &.warning {
+    border-left-color: $nord13;
+
+    &::before {
+      content: "emergency_home";
+      background-color: $nord13;
+    }
+  }
+
+  &.danger {
+    border-left-color: $nord11;
+
+    &::before {
+      content: "local_fire_department";
+      background-color: $nord11;
+    }
+  }
 }
