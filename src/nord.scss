@@ -73,11 +73,19 @@ code[class*="language-"] {
 
 .note {
   position: relative;
-  padding: 16px 16px 0 32px;
+  padding: 16px 16px 16px 32px;
   margin: 0 0 16px 15px;
   font-size: 0.8em;
   background-color: $nord2;
   border-left: 4px solid $nord14;
+
+  & > *:first-child {
+    margin-top: 0;
+  }
+
+  & > *:last-child {
+    margin-bottom: 0;
+  }
 
   & h1,
   h2,
@@ -85,7 +93,7 @@ code[class*="language-"] {
   h4,
   h5,
   h6 {
-    margin-top: 0;
+    color: $nord14;
   }
 
   &::before {
@@ -109,6 +117,15 @@ code[class*="language-"] {
   &.info {
     border-left-color: $nord10;
 
+    & h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      color: $nord10;
+    }
+
     &::before {
       content: "info";
       background-color: $nord10;
@@ -118,6 +135,15 @@ code[class*="language-"] {
   &.warning {
     border-left-color: $nord13;
 
+    & h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      color: $nord13;
+    }
+
     &::before {
       content: "emergency_home";
       background-color: $nord13;
@@ -126,6 +152,15 @@ code[class*="language-"] {
 
   &.danger {
     border-left-color: $nord11;
+
+    & h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      color: $nord11;
+    }
 
     &::before {
       content: "local_fire_department";
