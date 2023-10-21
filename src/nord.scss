@@ -6,10 +6,12 @@
 @import-theme "default";
 @import "https://fonts.googleapis.com/css2?family=Noto+Sans+JP&display=swap";
 @import "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined";
+@import "https://fonts.googleapis.com/css2?family=Source+Code+Pro&display=swap";
 @import "nord-highlightjs/dist/nord.css";
 @import "prism-themes/themes/prism-nord.css";
 
-$font-default: "Noto Sans JP";
+$font-default: "Noto Sans JP", sans-serif;
+$font-code: "Source Code Pro", monospace;
 $font-icon: "Material Symbols Outlined";
 
 section {
@@ -59,8 +61,14 @@ a {
 }
 
 code {
+  font-family: $font-code;
   color: $nord8;
   background-color: $nord0;
+}
+
+// Prism.js
+code[class*="language-"] {
+  font-family: $font-code;
 }
 
 .note {
