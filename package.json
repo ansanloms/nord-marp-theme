@@ -15,15 +15,14 @@
   "main": "./dist/nord.css",
   "scripts": {
     "lint": "run-s --continue-on-error lint:*",
-    "lint:prettier": "prettier --log-level warn --check .",
-    "lint:stylelint": "stylelint \"**/*.scss\"",
-    "lint:eslint": "eslint --ext \".js,.mjs\" .",
+    "lint:prettier": "prettier --log-level warn --check --ignore-path .lintignore .",
+    "lint:stylelint": "stylelint \"**/*.scss\" --ignore-path .lintignore",
+    "lint:eslint": "eslint --ext \".js,.mjs\" --ignore-path .lintignore .",
     "fix": "run-p --continue-on-error fix:*",
-    "fix:prettier": "prettier --log-level warn --write .",
-    "fix:stylelint": "stylelint \"**/*.scss\" --fix",
-    "fix:eslint": "eslint --ext \".js,.mjs\" --fix .",
-    "build": "node ./bin/build.mjs",
-    "postinstall": "npm run build"
+    "fix:prettier": "prettier --log-level warn --write --ignore-path .lintignore .",
+    "fix:stylelint": "stylelint \"**/*.scss\" --fix --ignore-path .lintignore",
+    "fix:eslint": "eslint --ext \".js,.mjs\" --ignore-path .lintignore --fix .",
+    "build": "node ./bin/build.mjs"
   },
   "dependencies": {
     "esbuild": "^0.19.5",
