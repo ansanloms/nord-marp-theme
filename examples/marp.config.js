@@ -1,11 +1,18 @@
 const fs = require("fs");
 const path = require("path");
 const mime = require("mime-types");
+const Prism = require("prismjs");
+const loadLanguages = require("prismjs/components/");
+
+loadLanguages(["jsx", "php", "markdown"]);
 
 module.exports = {
   html: true,
 
   engine: ({ marp }) => {
+    marp.highlighter = (code, lang) =>
+      Prism.highlight(code, Prism.languages[lang], lang);
+
     marp
       .use(require("markdown-it-container"), "note", {
         render: (tokens, idx) => {

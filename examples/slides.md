@@ -86,6 +86,9 @@ You can use [Prism.js](https://prismjs.com/) by writing the following in `marp.c
 
 ```javascript
 const Prism = require("prismjs");
+const loadLanguages = require("prismjs/components/");
+
+loadLanguages(["jsx", "php", "markdown"]);
 
 module.exports = {
   engine: ({ marp }) => {
@@ -119,7 +122,7 @@ module.exports = {
         const className = tokens[idx].info.trim().slice("note".length + 1);
         return tokens[idx].nesting === 1
           ? `<div class="note ${className}">`
-          : `</div>`;
+          : "</div>";
       },
     });
 
@@ -131,43 +134,59 @@ module.exports = {
 ---
 
 ::: note
-Tip. (Default)
+
+### Tip (Default)
+
 :::
 
-```txt
+```markdown
 ::: note
-Tip. (Default)
+
+### Tip (Default)
+
 :::
 ```
 
 ::: note info
-Info.
+
+### Info
+
 :::
 
-```txt
+```markdown
 ::: note info
-Info.
+
+### Info
+
 :::
 ```
 
 ---
 
 ::: note warning
-Warning.
+
+### Warning
+
 :::
 
-```txt
+```markdown
 ::: note warning
-Warning.
+
+### Warning
+
 :::
 ```
 
 ::: note danger
-Danger.
+
+### Danger
+
 :::
 
-```txt
+```markdown
 ::: note danger
-Danger.
+
+### Danger
+
 :::
 ```
