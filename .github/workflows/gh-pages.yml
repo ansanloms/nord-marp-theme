@@ -23,11 +23,11 @@ jobs:
 
       - run: npm ci
       - run: npm run build
-      - run: npx @marp-team/marp-cli@latest ./examples/slides.md --theme ./dist/nord.css --config ./examples/marp.config.js --output ./dist/index.html
+      - run: npx @marp-team/marp-cli@latest ./examples/slides.md --theme ./dist/nord.css --config ./examples/marp.config.js --output ./examples/dist/index.html
 
       - name: Deploy
         uses: crazy-max/ghaction-github-pages@v2.0.1
         with:
-          build_dir: dist
+          build_dir: ./examples/dist
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
