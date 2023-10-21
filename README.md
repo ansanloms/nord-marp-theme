@@ -9,7 +9,7 @@
 ## Usage
 
 ```bash
-npm i -D github:ansanloms/nord-marp-theme#v0.1.1
+npm i -D github:ansanloms/nord-marp-theme
 ```
 
 ```javascript:marp.config.js
