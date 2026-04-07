@@ -1,0 +1,75 @@
+/*!
+@theme nord
+*/
+
+@use "nord/src/sass/nord.scss" as *;
+@import-theme "default";
+
+$font-default:
+  "Inter",
+  "Helvetica Neue",
+  Arial,
+  "Hiragino Kaku Gothic ProN",
+  "Hiragino Sans",
+  "Noto Sans JP",
+  sans-serif,;
+
+$font-code:
+  "JetBrains Mono",
+  "Fira Code",
+  "Cascadia Code",
+  Consolas,
+  "Courier New",
+  monospace,;
+
+section {
+  font-family: $font-default;
+  color: $nord4;
+  background-color: $nord1;
+}
+
+h1,
+h2 {
+  color: $nord9;
+}
+
+h3,
+h4,
+h5,
+h6 {
+  color: $nord4;
+}
+
+blockquote {
+  color: $nord7;
+  border-color: $nord4;
+}
+
+table,
+th,
+td {
+  border-color: $nord4;
+}
+
+th {
+  background-color: $nord3;
+}
+
+td {
+  background-color: $nord1;
+}
+
+pre {
+  color: $nord4;
+  background-color: $nord0;
+}
+
+a {
+  color: $nord8;
+}
+
+code {
+  font-family: $font-code;
+  color: $nord8;
+  background-color: $nord0;
+}
