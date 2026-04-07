@@ -40,7 +40,7 @@ _This is italic text._
 
 > blockquote.
 >
-> > Nested blockquote.
+>> Nested blockquote.
 
 ---
 
@@ -80,113 +80,68 @@ sayHello("John");
 
 ---
 
-## Prism.js
-
-You can use [Prism.js](https://prismjs.com/) by writing the following in `marp.config.js` .
+# Highlighting with [Shiki](https://shiki.style/)
 
 ```javascript
-const Prism = require("prismjs");
-const loadLanguages = require("prismjs/components/");
+// marp.config.mjs
 
-loadLanguages(["jsx", "php", "markdown"]);
+import { defineConfig } from "@marp-team/marp-cli";
+import Shiki from "@shikijs/markdown-it";
 
-module.exports = {
-  engine: ({ marp }) => {
-    marp.highlighter = (code, lang) =>
-      Prism.highlight(code, Prism.languages[lang], lang);
+export default defineConfig({
+  engine: async ({ marp }) => {
+    marp.use(await Shiki({ theme: "nord" }));
 
     return marp;
   },
-};
+});
 ```
-
-<!--
-
-Reference:
-
-<https://github.com/highlightjs/highlightjs-structured-text/issues/9#issuecomment-686326994>
-
--->
 
 ---
 
-# Note
-
-You can use Note by writing the following in `marp.config.js` .
+# Github-style alerts
 
 ```javascript
-module.exports = {
-  engine: ({ marp }) => {
-    marp.use(require("markdown-it-container"), "note", {
-      render: (tokens, idx) => {
-        const className = tokens[idx].info.trim().slice("note".length + 1);
-        return tokens[idx].nesting === 1
-          ? `<div class="note ${className}">`
-          : "</div>";
-      },
-    });
+// marp.config.mjs
+
+import { defineConfig } from "@marp-team/marp-cli";
+import MarkdownItGitHubAlerts from "markdown-it-github-alerts";
+
+export default defineConfig({
+  engine: async ({ marp }) => {
+    marp.use(MarkdownItGitHubAlerts);
 
     return marp;
   },
-};
+});
 ```
 
 ---
 
-::: note
+> [!NOTE]
+> Highlights information that users should take into account, even when skimming.
 
-### Tip (Default)
+> [!TIP]
+> Optional information to help a user be more successful.
 
-:::
+> [!IMPORTANT]
+> Crucial information necessary for users to succeed.
 
-```markdown
-::: note
+> [!WARNING]
+> Critical content demanding immediate user attention due to potential risks.
 
-### Tip (Default)
-
-:::
-```
-
-::: note info
-
-### Info
-
-:::
-
-```markdown
-::: note info
-
-### Info
-
-:::
-```
+> [!CAUTION]
+> Negative potential consequences of an action.
 
 ---
 
-::: note warning
+# mermaid
 
-### Warning
-
-:::
-
-```markdown
-::: note warning
-
-### Warning
-
-:::
-```
-
-::: note danger
-
-### Danger
-
-:::
-
-```markdown
-::: note danger
-
-### Danger
-
-:::
+```mermaid
+flowchart LR
+    A[Start] --> B{Is it?}
+    B -->|Yes| C[OK]
+    C --> D[Rethink]
+    D --> B
+    B ---->|No| E[End]
 ```

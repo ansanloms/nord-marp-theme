@@ -1,0 +1,35 @@
+{
+  "$schema": "https://raw.githubusercontent.com/denoland/deno/refs/heads/main/cli/schemas/config-file.v1.json",
+  "fmt": {
+    "proseWrap": "preserve"
+  },
+  "lint": {
+    "rules": { "tags": ["recommended"] },
+    "plugins": ["jsr:@aireone/deno-lint-curly"]
+  },
+  "exclude": ["dist/"],
+  "imports": {
+    "@marp-team/marp-cli": "npm:@marp-team/marp-cli@4.3.1",
+    "@marp-team/marp-core": "npm:@marp-team/marp-core@4.3.0",
+    "@shikijs/markdown-it": "npm:@shikijs/markdown-it@4.0.2",
+    "@std/encoding": "jsr:@std/encoding@1.0.10",
+    "@std/media-types": "jsr:@std/media-types@1.1.0",
+    "@std/path": "jsr:@std/path@1.1.4",
+    "isomorphic-mermaid": "npm:isomorphic-mermaid@0.1.1",
+    "markdown-it-github-alerts": "npm:markdown-it-github-alerts@1.0.1"
+  },
+  "tasks": {
+    "marp": {
+      "description": "Run marp command",
+      "command": "deno --quiet run --allow-env --allow-sys --allow-run --allow-read --allow-write --allow-net=127.0.0.1 @marp-team/marp-cli/marp-cli.js"
+    },
+    "build": "deno task build:html; deno task build:pdf; deno task build:pptx",
+    "build:html": "deno task marp slides.md --config-file marp.config.mjs --output ./dist/slides.html",
+    "build:pdf": "deno task marp slides.md --config-file marp.config.mjs --allow-local-files --pdf-outlines --output ./dist/slides.pdf",
+    "build:pptx": "deno task marp slides.md --config-file marp.config.mjs --allow-local-files --pptx --output ./dist/slides.pptx",
+    "watch": "deno task build:html --watch",
+    "check": "deno check **/*.ts",
+    "lint": "deno lint && deno fmt --check",
+    "fix": "deno lint --fix && deno fmt"
+  }
+}

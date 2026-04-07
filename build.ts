@@ -1,18 +1,18 @@
 import { build } from "esbuild";
 import { sassPlugin } from "esbuild-sass-plugin";
-import path from "node:path";
-import url from "node:url";
+import * as path from "@std/path";
 
-const __dirname = path.dirname(url.fileURLToPath(import.meta.url));
+const __dirname = path.dirname(path.fromFileUrl(import.meta.url));
 
 try {
   await build({
-    entryPoints: [path.join(__dirname, "../src/nord.scss")],
-    outdir: path.join(__dirname, "../dist"),
+    entryPoints: [path.resolve(path.join(__dirname, "./nord.scss"))],
+    outdir: path.resolve(path.join(__dirname, "./dist")),
     bundle: true,
     minify: true,
     loader: {
       ".png": "dataurl",
+      ".svg": "dataurl",
     },
     plugins: [sassPlugin()],
   });
@@ -20,5 +20,5 @@ try {
   console.log("Build complete!");
 } catch (err) {
   console.error(err);
-  process.exit(1);
+  Deno.exit(1);
 }
