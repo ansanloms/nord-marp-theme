@@ -74,7 +74,7 @@ const config = {
 mermaid.initialize(config);
 
 globalThis.addEventListener("load", async () => {
-  const pres = [...document.querySelectorAll("pre.mermaid")];
+  const pres = [...document.querySelectorAll("div.mermaid")];
   if (!pres.length) {
     return;
   }

@@ -121,8 +121,7 @@ class PostprocessMarpitEngine extends Marp {
 }
 
 export default defineConfig({
-  themeSet: "../dist",
-  theme: "./assets/styles/custom.css",
+  theme: "../dist/nord.css",
   html: true,
   engine: async (options) =>
     new PostprocessMarpitEngine(options)
@@ -140,11 +139,12 @@ export default defineConfig({
           const token = tokens[idx];
           const lang = token.info.trim();
 
-          // mermaid は <pre class="mermaid"> として出力する。HTML 末尾に
+          // mermaid は <div class="mermaid"> として出力する。HTML 末尾に
           // inline 注入される mermaid.run() がこの class を走査して SVG に
-          // 置換する。
+          // 置換する。<pre> ではなく <div> なのは、Marp テーマの pre 装飾
+          // (背景色 / padding / 枠) が乗らないようにするため。
           if (lang === "mermaid") {
-            return `<pre class="mermaid">${escapeHtml(token.content)}</pre>\n`;
+            return `<div class="mermaid">${escapeHtml(token.content)}</div>\n`;
           }
 
           // デフォルトの処理。
