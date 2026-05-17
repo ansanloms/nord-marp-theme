@@ -82,17 +82,70 @@ const replaceAsync = async (str, regex, asyncFn) => {
   return str.replace(regex, () => replacements.shift());
 };
 
+/**
+ * @typedef {Record<string, unknown>} MarpitEnv
+ */
+
+/**
+ * @typedef {object} PreprocessResult
+ * @property {string} markdown
+ * @property {MarpitEnv} env
+ */
+
+/**
+ * @typedef {object} RenderResult
+ * @property {string} html
+ * @property {string} css
+ * @property {string[]} comments
+ */
+
+/**
+ * @callback Preprocess
+ * @param {string} markdown
+ * @param {MarpitEnv} env
+ * @returns {Promise<PreprocessResult> | PreprocessResult}
+ */
+
+/**
+ * @callback Postprocess
+ * @param {string} markdown
+ * @param {MarpitEnv} env
+ * @param {string} html
+ * @param {string} css
+ * @param {string[]} comments
+ * @returns {Promise<RenderResult> | RenderResult}
+ */
+
 class PostprocessMarpitEngine extends Marp {
+  /** @type {Preprocess | undefined} */
+  preprocess;
+
+  /** @type {Postprocess | undefined} */
+  postprocess;
+
+  /**
+   * @param {Preprocess} preprocess
+   * @returns {this}
+   */
   withPreprocess(preprocess) {
     this.preprocess = preprocess;
     return this;
   }
 
+  /**
+   * @param {Postprocess} postprocess
+   * @returns {this}
+   */
   withPostprocess(postprocess) {
     this.postprocess = postprocess;
     return this;
   }
 
+  /**
+   * @param {string} markdown
+   * @param {MarpitEnv} [env={}]
+   * @returns {Promise<RenderResult>}
+   */
   async render(markdown, env = {}) {
     const processed = this.preprocess
       ? await this.preprocess(markdown, env)
