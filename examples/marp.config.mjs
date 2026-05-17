@@ -9,6 +9,26 @@ import mermaid from "isomorphic-mermaid";
 
 const __dirname = path.dirname(path.fromFileUrl(import.meta.url));
 
+// Nord palette — https://www.nordtheme.com/docs/colors-and-palettes
+const nord = {
+  nord0: "#2e3440",
+  nord1: "#3b4252",
+  nord2: "#434c5e",
+  nord3: "#4c566a",
+  nord4: "#d8dee9",
+  nord5: "#e5e9f0",
+  nord6: "#eceff4",
+  nord7: "#8fbcbb",
+  nord8: "#88c0d0",
+  nord9: "#81a1c1",
+  nord10: "#5e81ac",
+  nord11: "#bf616a",
+  nord12: "#d08770",
+  nord13: "#ebcb8b",
+  nord14: "#a3be8c",
+  nord15: "#b48ead",
+};
+
 mermaid.initialize({
   startOnLoad: false,
   securityLevel: "strict",
@@ -16,37 +36,37 @@ mermaid.initialize({
   theme: "base",
   themeVariables: {
     darkMode: true,
-    background: "#2e3440", // nord0
-    primaryColor: "#3b4252", // nord1
-    primaryTextColor: "#eceff4", // nord6
-    primaryBorderColor: "#5e81ac", // nord10
-    secondaryColor: "#434c5e", // nord2
-    secondaryTextColor: "#eceff4", // nord6
-    secondaryBorderColor: "#5e81ac", // nord10
-    tertiaryColor: "#4c566a", // nord3
-    tertiaryTextColor: "#eceff4", // nord6
-    tertiaryBorderColor: "#5e81ac", // nord10
-    lineColor: "#88c0d0", // nord8
-    textColor: "#eceff4", // nord6
-    mainBkg: "#3b4252", // nord1
-    nodeBkg: "#3b4252", // nord1
-    nodeBorder: "#5e81ac", // nord10
-    clusterBkg: "#434c5e", // nord2
-    clusterBorder: "#5e81ac", // nord10
-    defaultLinkColor: "#88c0d0", // nord8
-    edgeLabelBackground: "#3b4252", // nord1
-    titleColor: "#88c0d0", // nord8
+    background: nord.nord0,
+    primaryColor: nord.nord1,
+    primaryTextColor: nord.nord6,
+    primaryBorderColor: nord.nord10,
+    secondaryColor: nord.nord2,
+    secondaryTextColor: nord.nord6,
+    secondaryBorderColor: nord.nord10,
+    tertiaryColor: nord.nord3,
+    tertiaryTextColor: nord.nord6,
+    tertiaryBorderColor: nord.nord10,
+    lineColor: nord.nord8,
+    textColor: nord.nord6,
+    mainBkg: nord.nord1,
+    nodeBkg: nord.nord1,
+    nodeBorder: nord.nord10,
+    clusterBkg: nord.nord2,
+    clusterBorder: nord.nord10,
+    defaultLinkColor: nord.nord8,
+    edgeLabelBackground: nord.nord1,
+    titleColor: nord.nord8,
     // Sequence / actor
-    actorBkg: "#3b4252", // nord1
-    actorBorder: "#5e81ac", // nord10
-    actorTextColor: "#eceff4", // nord6
-    actorLineColor: "#88c0d0", // nord8
-    signalColor: "#eceff4", // nord6
-    signalTextColor: "#eceff4", // nord6
+    actorBkg: nord.nord1,
+    actorBorder: nord.nord10,
+    actorTextColor: nord.nord6,
+    actorLineColor: nord.nord8,
+    signalColor: nord.nord6,
+    signalTextColor: nord.nord6,
     // Notes
-    noteBkgColor: "#ebcb8b", // nord13
-    noteTextColor: "#2e3440", // nord0
-    noteBorderColor: "#bf616a", // nord11
+    noteBkgColor: nord.nord13,
+    noteTextColor: nord.nord0,
+    noteBorderColor: nord.nord11,
   },
 });
 
