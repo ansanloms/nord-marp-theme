@@ -35,13 +35,13 @@ section {
   font-family:
     "Inter", "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN",
     "Hiragino Sans", "Noto Sans JP", sans-serif;
-  color: var(--nord4);
-  background-color: var(--nord1);
+  color: var(--nord6);
+  background-color: var(--nord0);
 }
 
 h1,
 h2 {
-  color: var(--nord9);
+  color: var(--nord8);
 }
 
 h3,
@@ -52,18 +52,18 @@ h6 {
 }
 
 blockquote {
-  color: var(--nord7);
-  border-color: var(--nord4);
+  color: var(--nord5);
+  border-color: var(--nord3);
 }
 
 table,
 th,
 td {
-  border-color: var(--nord4);
+  border-color: var(--nord3);
 }
 
 th {
-  background-color: var(--nord3);
+  background-color: var(--nord2);
 }
 
 td {
@@ -71,8 +71,8 @@ td {
 }
 
 pre {
-  color: var(--nord4);
-  background-color: var(--nord0);
+  color: var(--nord6);
+  background-color: var(--nord1);
 }
 
 a {
@@ -83,6 +83,73 @@ code {
   font-family:
     "JetBrains Mono", "Fira Code", "Cascadia Code", Consolas, "Courier New",
     monospace;
-  color: var(--nord8);
-  background-color: var(--nord0);
+  color: var(--nord7);
+  background-color: var(--nord1);
+}
+
+kbd {
+  font-family:
+    "JetBrains Mono", "Fira Code", "Cascadia Code", Consolas, "Courier New",
+    monospace;
+  color: var(--nord6);
+  background-color: var(--nord2);
+  border: 1px solid var(--nord3);
+  border-radius: 0.25em;
+  padding: 0.1em 0.4em;
+  font-size: 0.85em;
+}
+
+/* GitHub-style alerts — https://github.com/antfu/markdown-it-github-alerts */
+.markdown-alert {
+  padding: 0.5em 1em;
+  margin: 1em 0;
+  border-left: 0.25em solid var(--nord3);
+  background-color: var(--nord1);
+}
+
+.markdown-alert-title {
+  display: flex;
+  align-items: center;
+  gap: 0.4em;
+  font-weight: bold;
+}
+
+.markdown-alert-note {
+  border-left-color: var(--nord10);
+}
+
+.markdown-alert-note .markdown-alert-title {
+  color: var(--nord10);
+}
+
+.markdown-alert-tip {
+  border-left-color: var(--nord14);
+}
+
+.markdown-alert-tip .markdown-alert-title {
+  color: var(--nord14);
+}
+
+.markdown-alert-important {
+  border-left-color: var(--nord15);
+}
+
+.markdown-alert-important .markdown-alert-title {
+  color: var(--nord15);
+}
+
+.markdown-alert-warning {
+  border-left-color: var(--nord13);
+}
+
+.markdown-alert-warning .markdown-alert-title {
+  color: var(--nord13);
+}
+
+.markdown-alert-caution {
+  border-left-color: var(--nord11);
+}
+
+.markdown-alert-caution .markdown-alert-title {
+  color: var(--nord11);
 }
