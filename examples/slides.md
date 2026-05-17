@@ -200,7 +200,7 @@ export default defineConfig({
 
 ---
 
-# mermaid
+# Mermaid - Flowchart
 
 ```mermaid
 flowchart LR
@@ -209,4 +209,52 @@ flowchart LR
     C --> D[Rethink]
     D --> B
     B ---->|No| E[End]
+```
+
+---
+
+# Mermaid - Sequence
+
+```mermaid
+sequenceDiagram
+    Alice->>Bob: Hello Bob
+    Bob-->>Alice: Hi Alice
+    Alice->>Bob: How are you?
+    Bob-->>Alice: I'm fine, thanks
+```
+
+---
+
+# Mermaid - State
+
+```mermaid
+stateDiagram-v2
+    [*] --> Idle
+    Idle --> Running: start
+    Running --> Paused: pause
+    Paused --> Running: resume
+    Running --> [*]: stop
+```
+
+---
+
+# Mermaid - Class
+
+```mermaid
+classDiagram
+    class Animal {
+        +String name
+        +int age
+        +makeSound()
+    }
+    class Dog {
+        +String breed
+        +bark()
+    }
+    class Cat {
+        +String color
+        +meow()
+    }
+    Animal <|-- Dog
+    Animal <|-- Cat
 ```
