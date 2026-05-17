@@ -78,18 +78,36 @@ hr {
   padding: 0;
 }
 
-table,
-th,
-td {
-  border-color: var(--nord3);
-}
+table {
+  border-collapse: collapse;
 
-th {
-  background-color: var(--nord2);
-}
+  & tr {
+    background-color: transparent;
+    border: 0;
 
-td {
-  background-color: var(--nord1);
+    &:nth-child(2n) {
+      background-color: var(--nord1);
+    }
+  }
+
+  & th,
+  & td {
+    padding: 0.4em 0.8em;
+    font-size: 1em;
+    line-height: 1.5;
+    text-align: left;
+    white-space: normal;
+    overflow: visible;
+    color: var(--nord6);
+    background-color: transparent;
+    border: 0;
+  }
+
+  & th {
+    color: var(--nord8);
+    font-weight: 600;
+    border-bottom: 2px solid var(--nord8);
+  }
 }
 
 pre {
