@@ -9,7 +9,7 @@
   },
   "exclude": ["dist/"],
   "imports": {
-    "@marp-team/marp-cli": "npm:@marp-team/marp-cli@4.3.1",
+    "@marp-team/marp-cli": "npm:@marp-team/marp-cli@4.4.0",
     "@marp-team/marp-core": "npm:@marp-team/marp-core@4.3.0",
     "@shikijs/markdown-it": "npm:@shikijs/markdown-it@4.0.2",
     "@std/encoding": "jsr:@std/encoding@1.0.10",

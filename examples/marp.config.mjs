@@ -13,8 +13,19 @@ mermaid.initialize({
   startOnLoad: false,
   securityLevel: "strict",
   htmlLabels: false,
-  theme: "dark",
 });
+
+const replaceAsync = async (str, regex, asyncFn) => {
+  const promises = [];
+  str.replace(regex, (match, ...args) => {
+    promises.push(asyncFn(match, ...args));
+    return match;
+  });
+
+  const replacements = await Promise.all(promises);
+
+  return str.replace(regex, () => replacements.shift());
+};
 
 class PostprocessMarpitEngine extends Marp {
   withPreprocess(preprocess) {
@@ -69,8 +80,8 @@ export default defineConfig({
           const lang = token.info.trim();
 
           // 特定の言語に対する処理。
-          if (lang === "mermaid") {
-            return `<div class="mermaid">${token.content}</div>\n`;
+          if (["mermaid"].includes(lang)) {
+            return `<section class="${lang}">${token.content}</section>\n`;
           }
 
           // デフォルトの処理。
@@ -102,23 +113,12 @@ export default defineConfig({
         markdown: await replaceAsync(
           markdown,
           /```mermaid\n([\s\S]*?)\n```/g,
-          async (_match, code) =>
-            `<section class="mermaid">${
-              (await mermaid.render("mermaid-diagram-id", code)).svg
-            }</section>`,
+          async (_match, code) => {
+            const { svg } = await mermaid.render("mermaid-diagram-id", code);
+
+            return svg;
+          },
         ),
         env,
       })),
 });
-
-const replaceAsync = async (str, regex, asyncFn) => {
-  const promises = [];
-  str.replace(regex, (match, ...args) => {
-    promises.push(asyncFn(match, ...args));
-    return match;
-  });
-
-  const replacements = await Promise.all(promises);
-
-  return str.replace(regex, () => replacements.shift());
-};
