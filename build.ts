@@ -1,20 +1,19 @@
 import { build } from "esbuild";
-import { sassPlugin } from "esbuild-sass-plugin";
 import * as path from "@std/path";
 
 const __dirname = path.dirname(path.fromFileUrl(import.meta.url));
 
 try {
   await build({
-    entryPoints: [path.resolve(path.join(__dirname, "./nord.scss"))],
+    entryPoints: [path.resolve(path.join(__dirname, "./nord.css"))],
     outdir: path.resolve(path.join(__dirname, "./dist")),
     bundle: true,
     minify: true,
+    external: ["default", "gaia", "uncover"],
     loader: {
       ".png": "dataurl",
       ".svg": "dataurl",
     },
-    plugins: [sassPlugin()],
   });
 
   console.log("Build complete!");
