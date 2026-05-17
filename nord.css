@@ -56,6 +56,13 @@ blockquote {
   border-color: var(--nord3);
 }
 
+hr {
+  border: 0;
+  background-color: var(--nord3);
+  height: 1px;
+  padding: 0;
+}
+
 table,
 th,
 td {
