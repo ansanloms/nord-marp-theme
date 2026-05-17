@@ -9,7 +9,7 @@ Marp 用 Nord テーマ。`nord.css` が `@import "default"` で Marp 標準テ�
 - `nord.css` — テーマ本体 (`@theme nord` ヘッダ + パレット + 配色)
 - `build.ts` — esbuild ラッパ。`nord.css` → `dist/nord.css`
 - `deno.json` — ルートの Deno タスクと依存 (ビルドツールのみ)
-- `examples/` — 独立した Deno プロジェクト。Marp スライドのサンプル (Mermaid / Shiki / GitHub Alerts 統合)。Marp 関連の依存はここに集約
+- `examples/` — 独立した Deno プロジェクト。Marp スライドのサンプル (Mermaid / Shiki / GitHub Alerts 統合)。Marp 関連の依存はここに集約。**mermaid のような theme 範囲外の機能** (公式 UMD bundle の inline 注入や `pre.mermaid` の装飾打ち消し) はすべて `examples/marp.config.mjs` 側に閉じる。`nord.css` は配色提供のみ
 - `dist/` — ビルド成果物 (生成物だがコミット対象)
 
 ## 主要コマンド
@@ -64,7 +64,7 @@ deno task --cwd ./examples build      # examples/dist/ に HTML/PDF/PPTX 出力
    - blockquote, table, ordered / unordered list, task list
    - 画像, KaTeX 数式, 水平線 (`<hr>`)
    - GitHub-style alerts (Note / Tip / Important / Warning / Caution)
-   - Mermaid (Flowchart / Sequence / Class)
+   - Mermaid (Flowchart / Sequence / State / Class)
 2. ルートで `deno task build` を実行して `dist/nord.css` を最新化する。
 3. `examples/` で `deno task build:image` を実行し、各スライドを PNG 化する。
 4. `examples/dist/png/slide.NNN.png` を 1 枚ずつ確認し、以下を見る:

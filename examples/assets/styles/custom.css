@@ -1,0 +1,16 @@
+@import-theme "nord";
+
+/**
+ * mermaid のコードブロック装飾を打ち消して、SVG を slide 中央に置く。
+ * SVG の dimension は marp.config.mjs の sandbox 経由 render で確定済み
+ * (mermaid 自身の inline width="100%" + max-width:Xpx に従う)。
+ */
+pre.mermaid {
+  background: transparent;
+  border: 0;
+  padding: 0;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
