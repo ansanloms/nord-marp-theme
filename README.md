@@ -5,19 +5,3 @@
 ## Demo
 
 <https://ansanloms.github.io/nord-marp-theme/>
-
-## Usage
-
-```bash
-npm i -D github:ansanloms/nord-marp-theme
-```
-
-```javascript:marp.config.js
-// marp.config.js
-
-const path = require("path");
-
-module.exports = {
-  theme: path.join(__dirname, "/node_modules/nord-marp-theme/dist/marp.css"),
-};
-```

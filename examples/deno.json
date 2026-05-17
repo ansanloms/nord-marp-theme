@@ -23,10 +23,11 @@
       "description": "Run marp command",
       "command": "deno --quiet run --allow-env --allow-sys --allow-run --allow-read --allow-write --allow-net=127.0.0.1 @marp-team/marp-cli/marp-cli.js"
     },
-    "build": "deno task build:html; deno task build:pdf; deno task build:pptx",
+    "build": "deno task build:html; deno task build:pdf; deno task build:pptx; deno task build:image",
     "build:html": "deno task marp slides.md --config-file marp.config.mjs --output ./dist/slides.html",
     "build:pdf": "deno task marp slides.md --config-file marp.config.mjs --allow-local-files --pdf-outlines --output ./dist/slides.pdf",
     "build:pptx": "deno task marp slides.md --config-file marp.config.mjs --allow-local-files --pptx --output ./dist/slides.pptx",
+    "build:image": "deno task marp slides.md --config-file marp.config.mjs --allow-local-files --images png --output ./dist/png/slide.png",
     "watch": "deno task build:html --watch",
     "check": "deno check **/*.ts",
     "lint": "deno lint && deno fmt --check",
