@@ -83,88 +83,108 @@ const replaceAsync = async (str, regex, asyncFn) => {
 };
 
 /**
+ * Marpit が render に渡す env オブジェクト。
  * @typedef {Record<string, unknown>} MarpitEnv
  */
 
 /**
+ * Preprocess が返すべき結果の型。書き換え後の Markdown と env をまとめて返す。
  * @typedef {object} PreprocessResult
- * @property {string} markdown
- * @property {MarpitEnv} env
+ * @property {string} markdown - 書き換え後の Markdown
+ * @property {MarpitEnv} env - 後続の処理に渡す env
  */
 
 /**
+ * Marpit の render() が返す結果の型。
  * @typedef {object} RenderResult
- * @property {string} html
- * @property {string} css
- * @property {string[]} comments
+ * @property {string} html - 生成された HTML
+ * @property {string} css - 生成された CSS
+ * @property {string[]} comments - Marpit が抽出した HTML コメント
  */
 
 /**
+ * Marpit が render() する前に Markdown 文字列に手を入れるためのコールバック。
+ * env も合わせて受け取り、書き換え後の Markdown と env を {@link PreprocessResult}
+ * として返す。Promise を返してもよく、mermaid SVG レンダリングのような
+ * コードブロック単位の async 処理を仕込むのに使う。
  * @callback Preprocess
- * @param {string} markdown
- * @param {MarpitEnv} env
+ * @param {string} markdown - 入力 Markdown
+ * @param {MarpitEnv} env - Marpit に渡される env
  * @returns {Promise<PreprocessResult> | PreprocessResult}
  */
 
 /**
+ * Marpit が render() した後の html / css / comments を加工するためのコールバック。
+ * 加工後の値を {@link RenderResult} として返す。Promise を返してもよい。
  * @callback Postprocess
- * @param {string} markdown
- * @param {MarpitEnv} env
- * @param {string} html
- * @param {string} css
- * @param {string[]} comments
+ * @param {string} markdown - preprocess を通した後の Markdown
+ * @param {MarpitEnv} env - 同じく preprocess 後の env
+ * @param {string} html - Marpit が生成した HTML
+ * @param {string} css - Marpit が生成した CSS
+ * @param {string[]} comments - Marpit が抽出したコメント
  * @returns {Promise<RenderResult> | RenderResult}
  */
 
+/**
+ * Marp を継承して、Marpit の render の前後に独自の async 処理を差し込めるよう
+ * にした engine。preprocess / postprocess を任意個チェーンで登録でき、登録順に
+ * 順次適用される。
+ */
 class PostprocessMarpitEngine extends Marp {
-  /** @type {Preprocess | undefined} */
-  preprocess;
+  /** @type {Preprocess[]} */
+  preprocesses = [];
 
-  /** @type {Postprocess | undefined} */
-  postprocess;
+  /** @type {Postprocess[]} */
+  postprocesses = [];
 
   /**
+   * Preprocess を末尾に追加する。複数回呼ぶと登録順に連鎖適用される。
    * @param {Preprocess} preprocess
    * @returns {this}
    */
   withPreprocess(preprocess) {
-    this.preprocess = preprocess;
+    this.preprocesses.push(preprocess);
     return this;
   }
 
   /**
+   * Postprocess を末尾に追加する。複数回呼ぶと登録順に連鎖適用される。
    * @param {Postprocess} postprocess
    * @returns {this}
    */
   withPostprocess(postprocess) {
-    this.postprocess = postprocess;
+    this.postprocesses.push(postprocess);
     return this;
   }
 
   /**
+   * 登録された preprocess を順に適用してから super.render() で Marpit に
+   * 委譲し、得られた結果を postprocess に順に通して最終的な
+   * {@link RenderResult} を返す。
    * @param {string} markdown
    * @param {MarpitEnv} [env={}]
    * @returns {Promise<RenderResult>}
    */
   async render(markdown, env = {}) {
-    const processed = this.preprocess
-      ? await this.preprocess(markdown, env)
-      : { markdown, env };
+    let processed = { markdown, env };
+    for (const fn of this.preprocesses) {
+      processed = await fn(processed.markdown, processed.env);
+    }
 
-    const { html, css, comments } = super.render(
-      processed.markdown,
-      processed.env,
-    );
+    /** @type {RenderResult} */
+    let result = super.render(processed.markdown, processed.env);
 
-    return this.postprocess
-      ? await this.postprocess(
+    for (const fn of this.postprocesses) {
+      result = await fn(
         processed.markdown,
         processed.env,
-        html,
-        css,
-        comments,
-      )
-      : { html, css, comments };
+        result.html,
+        result.css,
+        result.comments,
+      );
+    }
+
+    return result;
   }
 }
 
