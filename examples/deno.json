@@ -13,9 +13,10 @@
     "@marp-team/marp-core": "npm:@marp-team/marp-core@4.3.0",
     "@shikijs/markdown-it": "npm:@shikijs/markdown-it@4.0.2",
     "@std/encoding": "jsr:@std/encoding@1.0.10",
+    "@std/html": "jsr:@std/html@1.0.6",
     "@std/media-types": "jsr:@std/media-types@1.1.0",
     "@std/path": "jsr:@std/path@1.1.4",
-    "isomorphic-mermaid": "npm:isomorphic-mermaid@0.1.1",
+    "mermaid": "npm:mermaid@11.15.0",
     "markdown-it-github-alerts": "npm:markdown-it-github-alerts@1.0.1"
   },
   "tasks": {
