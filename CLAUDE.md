@@ -44,9 +44,7 @@ deno task --cwd ./examples build      # examples/dist/ に HTML/PDF/PPTX 出力
 - `build:pdf` — `examples/dist/slides.pdf` (印刷物相当のレンダリング)
 - `build:pptx` — `examples/dist/slides.pptx` (PowerPoint 互換)
 - `build:image` — `examples/dist/png/slide.NNN.png` (各スライドを PNG 化、デザイン検証用)
-- `build` — `build:image` を除く 3 形式を一括生成
-
-`build` に `build:image` を含めないのは、PNG は CI / 配布対象ではなく **デザイン検証時のみ生成する一時成果物** であり、毎回吐くとビルド時間が伸びるため。明示的にデザイン検証を行う時だけ `build:image` を単独で呼ぶ。
+- `build` — 上記 4 形式を一括生成
 
 確認ポイント:
 
