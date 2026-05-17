@@ -24,6 +24,22 @@ author: ansanloms
 
 ---
 
+# Heading & Body
+
+## Section heading
+
+Body text under h2. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+
+### Subsection heading
+
+Body text under h3. Used to verify that the body color does not overpower h3-h6 headings on a dark background.
+
+#### Detail heading
+
+Body text under h4.
+
+---
+
 # Paragraph
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
@@ -33,6 +49,14 @@ Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliqu
 **This is bold text.**
 
 _This is italic text._
+
+---
+
+# Inline elements
+
+A paragraph that mixes a [hyperlink](https://www.nordtheme.com/), some `inline code`, **bold**, _italic_, ~~strikethrough~~, and a keyboard shortcut <kbd>Ctrl</kbd> + <kbd>C</kbd>.
+
+Another line: see the [Nord docs](https://www.nordtheme.com/docs) and run `deno task build` after editing the theme.
 
 ---
 
@@ -56,6 +80,23 @@ _This is italic text._
 
 ---
 
+# Task list & horizontal rule
+
+- [x] Completed task
+- [x] Another completed item
+- [ ] Pending task
+- [ ] Item that is still open
+  - [x] Nested completed sub-task
+  - [ ] Nested pending sub-task
+
+Content above the horizontal rule.
+
+<hr>
+
+Content below the horizontal rule (`<hr>`) within a single slide.
+
+---
+
 ## Table
 
 | Option | Description                     |
@@ -63,6 +104,12 @@ _This is italic text._
 | hoge   | Lorem ipsum dolor sit amet      |
 | fuga   | Consectetur adipiscing elit     |
 | piyo   | Integer molestie lorem at massa |
+
+---
+
+# Image
+
+![Nord palette swatches](./assets/nord-palette.svg)
 
 ---
 
@@ -77,6 +124,22 @@ const sayHello = (name) => {
 
 sayHello("John");
 ```
+
+---
+
+# Math (KaTeX)
+
+Inline math: $E = mc^2$ and $\sum_{i=1}^{n} i = \frac{n(n+1)}{2}$.
+
+Display math:
+
+$$
+\int_{-\infty}^{\infty} e^{-x^2} \, dx = \sqrt{\pi}
+$$
+
+$$
+A = \begin{pmatrix} a & b \\\\ c & d \end{pmatrix}
+$$
 
 ---
 
@@ -126,6 +189,8 @@ export default defineConfig({
 
 > [!IMPORTANT]
 > Crucial information necessary for users to succeed.
+
+---
 
 > [!WARNING]
 > Critical content demanding immediate user attention due to potential risks.

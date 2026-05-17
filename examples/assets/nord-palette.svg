@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 320" width="800" height="320">
+  <style>
+    .label { font-family: "Inter", "Helvetica Neue", Arial, sans-serif; font-size: 14px; font-weight: 600; }
+    .hex { font-family: "JetBrains Mono", "Fira Code", monospace; font-size: 12px; }
+    .on-dark { fill: #eceff4; }
+    .on-light { fill: #2e3440; }
+  </style>
+
+  <!-- Polar Night -->
+  <g>
+    <rect x="0"   y="0"  width="200" height="80" fill="#2e3440"/>
+    <rect x="200" y="0"  width="200" height="80" fill="#3b4252"/>
+    <rect x="400" y="0"  width="200" height="80" fill="#434c5e"/>
+    <rect x="600" y="0"  width="200" height="80" fill="#4c566a"/>
+    <text x="16"  y="32" class="label on-dark">nord0</text><text x="16"  y="56" class="hex on-dark">#2e3440</text>
+    <text x="216" y="32" class="label on-dark">nord1</text><text x="216" y="56" class="hex on-dark">#3b4252</text>
+    <text x="416" y="32" class="label on-dark">nord2</text><text x="416" y="56" class="hex on-dark">#434c5e</text>
+    <text x="616" y="32" class="label on-dark">nord3</text><text x="616" y="56" class="hex on-dark">#4c566a</text>
+  </g>
+
+  <!-- Snow Storm -->
+  <g>
+    <rect x="0"   y="80" width="266" height="80" fill="#d8dee9"/>
+    <rect x="266" y="80" width="267" height="80" fill="#e5e9f0"/>
+    <rect x="533" y="80" width="267" height="80" fill="#eceff4"/>
+    <text x="16"  y="112" class="label on-light">nord4</text><text x="16"  y="136" class="hex on-light">#d8dee9</text>
+    <text x="282" y="112" class="label on-light">nord5</text><text x="282" y="136" class="hex on-light">#e5e9f0</text>
+    <text x="549" y="112" class="label on-light">nord6</text><text x="549" y="136" class="hex on-light">#eceff4</text>
+  </g>
+
+  <!-- Frost -->
+  <g>
+    <rect x="0"   y="160" width="200" height="80" fill="#8fbcbb"/>
+    <rect x="200" y="160" width="200" height="80" fill="#88c0d0"/>
+    <rect x="400" y="160" width="200" height="80" fill="#81a1c1"/>
+    <rect x="600" y="160" width="200" height="80" fill="#5e81ac"/>
+    <text x="16"  y="192" class="label on-light">nord7</text> <text x="16"  y="216" class="hex on-light">#8fbcbb</text>
+    <text x="216" y="192" class="label on-light">nord8</text> <text x="216" y="216" class="hex on-light">#88c0d0</text>
+    <text x="416" y="192" class="label on-light">nord9</text> <text x="416" y="216" class="hex on-light">#81a1c1</text>
+    <text x="616" y="192" class="label on-dark" >nord10</text><text x="616" y="216" class="hex on-dark" >#5e81ac</text>
+  </g>
+
+  <!-- Aurora -->
+  <g>
+    <rect x="0"   y="240" width="160" height="80" fill="#bf616a"/>
+    <rect x="160" y="240" width="160" height="80" fill="#d08770"/>
+    <rect x="320" y="240" width="160" height="80" fill="#ebcb8b"/>
+    <rect x="480" y="240" width="160" height="80" fill="#a3be8c"/>
+    <rect x="640" y="240" width="160" height="80" fill="#b48ead"/>
+    <text x="16"  y="272" class="label on-dark" >nord11</text><text x="16"  y="296" class="hex on-dark" >#bf616a</text>
+    <text x="176" y="272" class="label on-light">nord12</text><text x="176" y="296" class="hex on-light">#d08770</text>
+    <text x="336" y="272" class="label on-light">nord13</text><text x="336" y="296" class="hex on-light">#ebcb8b</text>
+    <text x="496" y="272" class="label on-light">nord14</text><text x="496" y="296" class="hex on-light">#a3be8c</text>
+    <text x="656" y="272" class="label on-light">nord15</text><text x="656" y="296" class="hex on-light">#b48ead</text>
+  </g>
+</svg>
