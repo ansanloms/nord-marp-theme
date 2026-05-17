@@ -31,7 +31,7 @@
   --nord15: #b48ead;
 
   /* Typography */
-  --font-sans:
+  --font-default:
     "Inter",
     "Helvetica Neue",
     Arial,
@@ -39,7 +39,7 @@
     "Hiragino Sans",
     "Noto Sans JP",
     sans-serif;
-  --font-mono:
+  --font-code:
     "JetBrains Mono",
     "Fira Code",
     "Cascadia Code",
@@ -49,7 +49,7 @@
 }
 
 section {
-  font-family: var(--font-sans);
+  font-family: var(--font-default);
   color: var(--nord6);
   background-color: var(--nord0);
 }
@@ -102,14 +102,14 @@ a {
 }
 
 code {
-  font-family: var(--font-mono);
+  font-family: var(--font-code);
   color: var(--nord7);
   background-color: var(--nord1);
 }
 
 kbd {
   display: inline-block;
-  font-family: var(--font-mono);
+  font-family: var(--font-code);
   color: var(--nord6);
   background-color: var(--nord2);
   border: 1px solid var(--nord3);
