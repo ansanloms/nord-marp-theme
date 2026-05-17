@@ -120,6 +120,30 @@ kbd {
   vertical-align: middle;
 }
 
+/* 日本語の自動改行処理 — https://zenn.dev/yhatt/scraps/d6004a2455e573 */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  word-break: auto-phrase;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  text-wrap: balance;
+}
+
+p {
+  text-wrap: pretty;
+}
+
 /* GitHub-style alerts — https://github.com/antfu/markdown-it-github-alerts */
 .markdown-alert {
   padding: 0.5em 1em;
