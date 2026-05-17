@@ -28,9 +28,29 @@ const [mermaidBundleSource, mermaidScriptSource] = await Promise.all([
  */
 
 /**
+ * {@link Preprocess} が返すべき結果。書き換え後の Markdown と env をまとめて返す。
+ * @typedef {object} PreprocessResult
+ * @property {string} markdown - 書き換え後の Markdown
+ * @property {any} env - 後続の処理に渡す env (Marpit の render が受ける env と同じ)
+ */
+
+/**
+ * Marpit が render() する前に Markdown 文字列に手を入れるためのコールバック。
+ * env も合わせて受け取り、書き換え後の Markdown と env を {@link PreprocessResult}
+ * として返す。Promise を返してもよく、コードブロック単位の async 処理を
+ * 仕込むのに使う。
+ * @callback Preprocess
+ * @param {string} markdown - 入力 Markdown
+ * @param {any} env - Marpit に渡される env
+ * @returns {Promise<PreprocessResult> | PreprocessResult}
+ */
+
+/**
  * Marpit が render() した後の html / css / comments を加工するためのコールバック。
  * 加工後の値を {@link RenderResult} として返す。Promise を返してもよい。
  * @callback Postprocess
+ * @param {string} markdown - preprocess を通した後の Markdown
+ * @param {any} env - 同じく preprocess 後の env
  * @param {RenderResult["html"]} html - Marpit が生成した HTML
  * @param {RenderResult["css"]} css - Marpit が生成した CSS
  * @param {RenderResult["comments"]} comments - Marpit が抽出したコメント
@@ -38,13 +58,26 @@ const [mermaidBundleSource, mermaidScriptSource] = await Promise.all([
  */
 
 /**
- * Marp を継承して、Marpit の render の後に独自の async 処理を差し込めるよう
- * にした engine。postprocess を任意個チェーンで登録でき、登録順に
+ * Marp を継承して、Marpit の render の前後に独自の async 処理を差し込めるよう
+ * にした engine。preprocess / postprocess を任意個チェーンで登録でき、登録順に
  * 順次適用される。
  */
 class PostprocessMarpitEngine extends Marp {
+  /** @type {Preprocess[]} */
+  preprocesses = [];
+
   /** @type {Postprocess[]} */
   postprocesses = [];
+
+  /**
+   * Preprocess を末尾に追加する。複数回呼ぶと登録順に連鎖適用される。
+   * @param {Preprocess} preprocess
+   * @returns {this}
+   */
+  withPreprocess(preprocess) {
+    this.preprocesses.push(preprocess);
+    return this;
+  }
 
   /**
    * Postprocess を末尾に追加する。複数回呼ぶと登録順に連鎖適用される。
@@ -57,18 +90,30 @@ class PostprocessMarpitEngine extends Marp {
   }
 
   /**
-   * super.render() で Marpit に委譲した後、得られた結果を postprocess に
-   * 順に通して最終的な {@link RenderResult} を返す。
+   * 登録された preprocess を順に適用してから super.render() で Marpit に
+   * 委譲し、得られた結果を postprocess に順に通して最終的な
+   * {@link RenderResult} を返す。
    * @param {string} markdown
    * @param {any} [env={}]
    * @returns {Promise<RenderResult>}
    */
   async render(markdown, env = {}) {
+    let processed = { markdown, env };
+    for (const fn of this.preprocesses) {
+      processed = await fn(processed.markdown, processed.env);
+    }
+
     /** @type {RenderResult} */
-    let result = super.render(markdown, env);
+    let result = super.render(processed.markdown, processed.env);
 
     for (const fn of this.postprocesses) {
-      result = await fn(result.html, result.css, result.comments);
+      result = await fn(
+        processed.markdown,
+        processed.env,
+        result.html,
+        result.css,
+        result.comments,
+      );
     }
 
     return result;
@@ -127,11 +172,11 @@ export default defineConfig({
         };
       })
       .use(MarkdownItGitHubAlerts)
-      .withPostprocess((html, css, comments) => ({
+      .withPostprocess((_markdown, _env, html, css, comments) => ({
         // 2 つの <script> を HTML 末尾に inline 注入する:
         //   1. mermaid 本体 (UMD bundle、globalThis.mermaid を設定)
-        //   2. assets/scripts/mermaid.mjs (config 置換済み、initialize / run +
-        //      sandbox 経由 render)
+        //   2. assets/scripts/mermaid.mjs (Nord パレット / MermaidConfig /
+        //      sandbox 経由 render を内包)
         // <pre class="mermaid"> の見た目は assets/styles/custom.css 側に閉じる。
         html: html + `
 <script>${mermaidBundleSource}</script>

@@ -1,10 +1,10 @@
 @import-theme "nord";
 
-/* mermaid のコードブロック装飾を打ち消し、SVG を slide 中央に aspect 比維持
- * で fit させる。mermaid は container の getBoundingClientRect (bespoke の
- * transform: scale 後の値) に応じて自然サイズを大きくするが、container 幅
- * 依存自体は marp.config.mjs 側で sandbox 経由の render により吸収している。
- * ここでは保険として SVG に縦上限を当てておく。 */
+/**
+ * mermaid のコードブロック装飾を打ち消して、SVG を slide 中央に置く。
+ * SVG の dimension は marp.config.mjs の sandbox 経由 render で確定済み
+ * (mermaid 自身の inline width="100%" + max-width:Xpx に従う)。
+ */
 pre.mermaid {
   background: transparent;
   border: 0;
@@ -13,11 +13,4 @@ pre.mermaid {
   display: flex;
   align-items: center;
   justify-content: center;
-
-  & > svg {
-    width: auto !important;
-    height: auto !important;
-    max-width: 100% !important;
-    max-height: 500px !important;
-  }
 }
