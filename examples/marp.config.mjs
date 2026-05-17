@@ -70,6 +70,15 @@ mermaid.initialize({
   },
 });
 
+/**
+ * 文字列に対する正規表現置換を非同期関数で行うユーティリティ。
+ * 各マッチごとに asyncFn を Promise として並列に走らせ、それぞれの解決値で
+ * 元の位置を書き戻す。
+ * @param {string} str - 入力文字列
+ * @param {RegExp} regex - マッチ用の正規表現 (g フラグ前提)
+ * @param {(...args: any[]) => Promise<string>} asyncFn - マッチごとに置換文字列を返す非同期関数。引数は String.prototype.replace の replacer と同じ
+ * @returns {Promise<string>}
+ */
 const replaceAsync = async (str, regex, asyncFn) => {
   const promises = [];
   str.replace(regex, (match, ...args) => {
@@ -83,23 +92,15 @@ const replaceAsync = async (str, regex, asyncFn) => {
 };
 
 /**
- * Marpit が render に渡す env オブジェクト。
- * @typedef {Record<string, unknown>} MarpitEnv
+ * Marpit の render() が返す結果。@marp-team/marpit の RenderResult をそのまま参照する。
+ * @typedef {import("@marp-team/marpit").RenderResult} RenderResult
  */
 
 /**
- * Preprocess が返すべき結果の型。書き換え後の Markdown と env をまとめて返す。
+ * {@link Preprocess} が返すべき結果。書き換え後の Markdown と env をまとめて返す。
  * @typedef {object} PreprocessResult
  * @property {string} markdown - 書き換え後の Markdown
- * @property {MarpitEnv} env - 後続の処理に渡す env
- */
-
-/**
- * Marpit の render() が返す結果の型。
- * @typedef {object} RenderResult
- * @property {string} html - 生成された HTML
- * @property {string} css - 生成された CSS
- * @property {string[]} comments - Marpit が抽出した HTML コメント
+ * @property {any} env - 後続の処理に渡す env (Marpit の render が受ける env と同じ)
  */
 
 /**
@@ -109,7 +110,7 @@ const replaceAsync = async (str, regex, asyncFn) => {
  * コードブロック単位の async 処理を仕込むのに使う。
  * @callback Preprocess
  * @param {string} markdown - 入力 Markdown
- * @param {MarpitEnv} env - Marpit に渡される env
+ * @param {any} env - Marpit に渡される env
  * @returns {Promise<PreprocessResult> | PreprocessResult}
  */
 
@@ -118,10 +119,10 @@ const replaceAsync = async (str, regex, asyncFn) => {
  * 加工後の値を {@link RenderResult} として返す。Promise を返してもよい。
  * @callback Postprocess
  * @param {string} markdown - preprocess を通した後の Markdown
- * @param {MarpitEnv} env - 同じく preprocess 後の env
- * @param {string} html - Marpit が生成した HTML
- * @param {string} css - Marpit が生成した CSS
- * @param {string[]} comments - Marpit が抽出したコメント
+ * @param {any} env - 同じく preprocess 後の env
+ * @param {RenderResult["html"]} html - Marpit が生成した HTML
+ * @param {RenderResult["css"]} css - Marpit が生成した CSS
+ * @param {RenderResult["comments"]} comments - Marpit が抽出したコメント
  * @returns {Promise<RenderResult> | RenderResult}
  */
 
@@ -162,7 +163,7 @@ class PostprocessMarpitEngine extends Marp {
    * 委譲し、得られた結果を postprocess に順に通して最終的な
    * {@link RenderResult} を返す。
    * @param {string} markdown
-   * @param {MarpitEnv} [env={}]
+   * @param {any} [env={}]
    * @returns {Promise<RenderResult>}
    */
   async render(markdown, env = {}) {
