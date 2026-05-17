@@ -13,6 +13,41 @@ mermaid.initialize({
   startOnLoad: false,
   securityLevel: "strict",
   htmlLabels: false,
+  theme: "base",
+  themeVariables: {
+    darkMode: true,
+    background: "#2e3440", // nord0
+    primaryColor: "#3b4252", // nord1
+    primaryTextColor: "#eceff4", // nord6
+    primaryBorderColor: "#5e81ac", // nord10
+    secondaryColor: "#434c5e", // nord2
+    secondaryTextColor: "#eceff4", // nord6
+    secondaryBorderColor: "#5e81ac", // nord10
+    tertiaryColor: "#4c566a", // nord3
+    tertiaryTextColor: "#eceff4", // nord6
+    tertiaryBorderColor: "#5e81ac", // nord10
+    lineColor: "#88c0d0", // nord8
+    textColor: "#eceff4", // nord6
+    mainBkg: "#3b4252", // nord1
+    nodeBkg: "#3b4252", // nord1
+    nodeBorder: "#5e81ac", // nord10
+    clusterBkg: "#434c5e", // nord2
+    clusterBorder: "#5e81ac", // nord10
+    defaultLinkColor: "#88c0d0", // nord8
+    edgeLabelBackground: "#3b4252", // nord1
+    titleColor: "#88c0d0", // nord8
+    // Sequence / actor
+    actorBkg: "#3b4252", // nord1
+    actorBorder: "#5e81ac", // nord10
+    actorTextColor: "#eceff4", // nord6
+    actorLineColor: "#88c0d0", // nord8
+    signalColor: "#eceff4", // nord6
+    signalTextColor: "#eceff4", // nord6
+    // Notes
+    noteBkgColor: "#ebcb8b", // nord13
+    noteTextColor: "#2e3440", // nord0
+    noteBorderColor: "#bf616a", // nord11
+  },
 });
 
 const replaceAsync = async (str, regex, asyncFn) => {
