@@ -8,7 +8,6 @@
     "jsr:@std/media-types@1.1.0": "1.1.0",
     "jsr:@std/path@1.1.4": "1.1.4",
     "npm:@marp-team/marp-cli@4.4.0": "4.4.0",
-    "npm:@marp-team/marp-core@4.3.0": "4.3.0",
     "npm:@shikijs/markdown-it@4.0.2": "4.0.2",
     "npm:markdown-it-github-alerts@1.0.1": "1.0.1_markdown-it@14.1.1",
     "npm:mermaid@11.15.0": "11.15.0"
@@ -891,8 +890,8 @@
     "devtools-protocol@0.0.1608973": {
       "integrity": "sha512-Tpm17fxYzt+J7VrGdc1k8YdRqS3YV7se/M6KeemEqvUbq/n7At1rWVuXMxQgpWkdwSdIEKYbU//Bve+Shm4YNQ=="
     },
-    "dompurify@3.4.3": {
-      "integrity": "sha512-VVwJidIJcp1hpg2OMXML3ZVRPYSZiq4aX7qBh83BSIpOaRDqI+qxhXjjIWnpzkOXhmp0L81lnoME1mnCc9H48A==",
+    "dompurify@3.4.4": {
+      "integrity": "sha512-r8K7KGKEcztXfA/nfabSYB2hg9tDphORJTdf8xprN/luSLGmNhOBN8dm1/SYjqLLet6YUFEXOcrdTuwryp/Bew==",
       "optionalDependencies": [
         "@types/trusted-types"
       ]
@@ -1735,7 +1734,6 @@
       "jsr:@std/media-types@1.1.0",
       "jsr:@std/path@1.1.4",
       "npm:@marp-team/marp-cli@4.4.0",
-      "npm:@marp-team/marp-core@4.3.0",
       "npm:@shikijs/markdown-it@4.0.2",
       "npm:markdown-it-github-alerts@1.0.1",
       "npm:mermaid@11.15.0"

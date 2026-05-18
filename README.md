@@ -4,4 +4,4 @@
 
 ## Demo
 
-<https://ansanloms.github.io/nord-marp-theme/>
+<https://ansanloms.github.io/nord-marp-theme/slides.html>

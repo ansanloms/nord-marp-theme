@@ -40,6 +40,7 @@ const config = {
   themeVariables: {
     darkMode: true,
     background: nord.nord0,
+    fontFamily: "var(--font-default)",
     primaryColor: nord.nord1,
     primaryTextColor: nord.nord6,
     primaryBorderColor: nord.nord10,
