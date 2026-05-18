@@ -2,8 +2,6 @@
 @theme nord
 */
 
-@import "default";
-
 /* Nord palette — https://www.nordtheme.com/docs/colors-and-palettes */
 :root {
   /* Polar Night */
@@ -49,26 +47,218 @@
 }
 
 section {
+  --marpit-root-font-size: 29px;
+
+  display: block;
+  flex-flow: column nowrap;
+  align-items: stretch;
+  place-content: safe center center;
   font-family: var(--font-default);
+  font-size: 29px;
+  font-weight: 400;
+  line-height: 1.5;
   color: var(--nord6);
   background-color: var(--nord0);
+  padding: 70px;
+
+  /* 末尾要素の下マージンをリセット。blockquote / li / alert / table cell
+   * など各コンテナ内の最後の <p> や入れ子要素が `margin: 0 0 0.8em` を
+   * 持つことで生まれる余分な下余白を消す。 */
+  & :last-child {
+    margin-bottom: 0;
+  }
 }
 
+/* Marpit local directives: paginate / header / footer */
+section::after {
+  position: absolute;
+  right: 30px;
+  bottom: 20px;
+  margin: 0;
+  padding: 0;
+  color: var(--nord3);
+  font-size: 0.6em;
+}
+
+header,
+footer {
+  position: absolute;
+  left: 30px;
+  right: 30px;
+  margin: 0;
+  color: var(--nord3);
+  font-size: 0.55em;
+  opacity: 0.6;
+}
+
+header {
+  top: 20px;
+}
+
+footer {
+  bottom: 20px;
+}
+
+/* Headings */
 h1,
-h2 {
-  color: var(--nord8);
-}
-
+h2,
 h3,
 h4,
 h5,
 h6 {
+  font-family: var(--font-default);
+  font-weight: 600;
+  line-height: 1.25;
+  margin: 0.6em 0 0.4em;
+  word-break: auto-phrase;
+  text-wrap: balance;
+}
+
+h1:first-child,
+h2:first-child,
+h3:first-child {
+  margin-top: 0;
+}
+
+h1 {
+  font-size: 1.8em;
+  color: var(--nord8);
+}
+
+h2 {
+  font-size: 1.4em;
+  color: var(--nord9);
+}
+
+h3 {
+  font-size: 1.2em;
+  color: var(--nord7);
+}
+
+h4,
+h5,
+h6 {
+  font-size: 1.1em;
+  color: var(--nord6);
+}
+
+/* Paragraph */
+p {
+  margin: 0 0 0.8em;
+  text-wrap: pretty;
+  word-break: auto-phrase;
+}
+
+/* Inline */
+a {
+  color: var(--nord8);
+  text-decoration: none;
+  text-underline-offset: 0.2em;
+}
+
+a:focus,
+a:focus-visible {
+  text-decoration: underline;
+}
+
+strong {
+  color: var(--nord6);
+  font-weight: 700;
+}
+
+em {
+  font-style: italic;
+}
+
+del,
+s {
   color: var(--nord4);
+  text-decoration: line-through;
+}
+
+code {
+  font-family: var(--font-code);
+  font-size: 0.9em;
+  color: var(--nord7);
+  background-color: var(--nord1);
+  padding: 0.1em 0.35em;
+  border-radius: 0.25em;
+}
+
+kbd {
+  display: inline-block;
+  font-family: var(--font-code);
+  font-size: 0.85em;
+  line-height: 1.4;
+  color: var(--nord6);
+  background-color: var(--nord2);
+  border: 1px solid var(--nord3);
+  border-radius: 0.25em;
+  padding: 0.1em 0.4em;
+  vertical-align: middle;
+}
+
+/* Block */
+pre {
+  font-family: var(--font-code);
+  font-size: 0.8em;
+  line-height: 1.5;
+  color: var(--nord6);
+  background-color: var(--nord1);
+  border-radius: 0.4em;
+  padding: 0.8em 1em;
+  margin: 0 0 0.8em;
+  overflow: auto;
+
+  & code {
+    font-size: inherit;
+    color: inherit;
+    background-color: transparent;
+    padding: 0;
+    border-radius: 0;
+
+    /* @shikijs/transformers 出力の装飾。Shiki は各行を
+     * <span class="line"> でラップするため、code 直下の .line に対して
+     * 当てる。 */
+    & > .line {
+      display: inline-block;
+
+      &.highlighted {
+        /* 親 .line は display: inline-block。width: 100% だけで <code> の
+         * content area 全幅に背景を塗る。padding / 負 margin で外側へ張り
+         * 出す手法は pre 側の padding 値に依存して text 位置がずれるため
+         * 使わない。 */
+        width: 100%;
+        background-color: color-mix(in srgb, var(--nord3) 50%, transparent);
+      }
+
+      & .highlighted-word {
+        font-weight: bold;
+        border-radius: 0.4em;
+        padding: 0 0.4em;
+        /* --nord13 (黄) を背景塗りのみで強調。outline は親 .line の
+         * inline-block に詰められて上下が切れるため使わない。alpha を
+         * 厚めにして視認性を保つ。 */
+        background-color: color-mix(in srgb, var(--nord13) 40%, transparent);
+      }
+    }
+  }
+
+  &.has-focused > code > .line:not(.focused) {
+    opacity: 0.8;
+    filter: blur(0.125em);
+  }
 }
 
 blockquote {
+  margin: 0 0 0.8em;
+  padding: 0.4em 1em;
+  border-left: 0.25em solid var(--nord3);
   color: var(--nord5);
-  border-color: var(--nord3);
+
+  & blockquote {
+    margin-top: 0.4em;
+  }
 }
 
 hr {
@@ -76,9 +266,69 @@ hr {
   background-color: var(--nord3);
   height: 1px;
   padding: 0;
+  margin: 0.8em 0;
+}
+
+ul,
+ol {
+  margin: 0 0 0.8em;
+  padding-left: 1.5em;
+
+  & li {
+    margin: 0.15em 0;
+
+    &::marker {
+      color: var(--nord3);
+    }
+
+    /* Task list (markdown-it-task-lists 出力) */
+    & input[type="checkbox"] {
+      appearance: none;
+      -webkit-appearance: none;
+      display: inline-block;
+      box-sizing: border-box;
+      font: inherit;
+      width: 1em;
+      height: 1em;
+      margin: 0 0.4em 0 0;
+      vertical-align: -0.15em;
+      background-color: transparent;
+      border: 0.08em solid var(--nord3);
+      border-radius: 0.2em;
+      position: relative;
+      cursor: default;
+
+      &:checked {
+        background-color: var(--nord8);
+        border-color: var(--nord8);
+
+        &::after {
+          content: "";
+          position: absolute;
+          top: 0.1em;
+          left: 0.28em;
+          width: 0.28em;
+          height: 0.55em;
+          border: solid var(--nord0);
+          border-width: 0 0.14em 0.14em 0;
+          transform: rotate(45deg);
+        }
+      }
+    }
+
+    &:has(> input[type="checkbox"])::marker {
+      content: "";
+    }
+  }
+
+  & ul,
+  & ol {
+    margin-bottom: 0;
+  }
 }
 
 table {
+  margin: 0 0 0.8em;
   border-collapse: collapse;
 
   & tr {
@@ -110,62 +360,55 @@ table {
   }
 }
 
-pre {
-  color: var(--nord6);
-  background-color: var(--nord1);
+img {
+  max-width: 100%;
+  height: auto;
 }
 
-a {
-  color: var(--nord8);
+/* Footnote — markdown-it-footnote output */
+sup.footnote-ref {
+  font-size: 0.75em;
+  vertical-align: super;
+  line-height: 0;
 }
 
-code {
-  font-family: var(--font-code);
-  color: var(--nord7);
-  background-color: var(--nord1);
-}
-
-kbd {
-  display: inline-block;
-  font-family: var(--font-code);
-  color: var(--nord6);
-  background-color: var(--nord2);
-  border: 1px solid var(--nord3);
-  border-radius: 0.25em;
-  padding: 0.1em 0.4em;
-  font-size: 0.85em;
+.footnotes {
+  position: absolute;
+  bottom: 80px;
+  left: 70px;
+  right: 70px;
+  font-size: 0.55em;
+  color: var(--nord4);
   line-height: 1.4;
-  vertical-align: middle;
-}
 
-/* 日本語の自動改行処理 — https://zenn.dev/yhatt/scraps/d6004a2455e573 */
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-p {
-  word-break: auto-phrase;
-}
+  & .footnotes-sep {
+    margin: 0 0 0.4em;
+  }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  text-wrap: balance;
-}
+  & ol {
+    padding-left: 1.5em;
+    margin: 0;
+  }
 
-p {
-  text-wrap: pretty;
+  & li {
+    margin: 0;
+  }
+
+  & li p {
+    margin: 0;
+  }
+
+  & .footnote-backref {
+    color: var(--nord8);
+    text-decoration: none;
+    margin-left: 0.3em;
+  }
 }
 
 /* GitHub-style alerts — https://github.com/antfu/markdown-it-github-alerts */
 .markdown-alert {
   padding: 0.5em 1em;
-  margin: 1em 0;
+  margin: 0.8em 0;
   border-left: 0.25em solid var(--nord3);
   background-color: var(--nord1);
 
