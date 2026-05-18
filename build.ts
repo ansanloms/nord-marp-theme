@@ -9,7 +9,6 @@ try {
     outdir: path.resolve(path.join(__dirname, "./dist")),
     bundle: true,
     minify: true,
-    external: ["default", "gaia", "uncover"],
     loader: {
       ".png": "dataurl",
       ".svg": "dataurl",

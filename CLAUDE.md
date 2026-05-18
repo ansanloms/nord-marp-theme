@@ -2,11 +2,13 @@
 
 ## リポジトリ概要
 
-Marp 用 Nord テーマ。`nord.css` が `@import "default"` で Marp 標準テーマを継承し、`:root` に Nord パレット 16 色を Custom Properties で定義した上で配色を上書きする単一 CSS テーマ。esbuild で minify した `dist/nord.css` を成果物として配布する。利用側は `dist/nord.css` を直接参照する。
+Marp 用 Nord テーマ。`nord.css` は Marp 組込テーマ (`default` / `gaia` / `uncover`) を継承せず、Marpit プリミティブの上に section / heading / paragraph / list / table / code / pre / blockquote / hr / kbd / 画像 / GFM alerts を直接定義する単一 CSS テーマ。`:root` に Nord パレット 16 色を Custom Properties で展開した上で配色を当てる。esbuild で minify した `dist/nord.css` を成果物として配布する。利用側は `dist/nord.css` を直接参照する。
+
+組込テーマを継承しない理由は、light-first な GitHub markdown 由来の CSS (`--bgColor-default` / `--fgColor-default` 等の light/dark 切替変数や h1 / h2 の `border-bottom`) が Nord (ミニマル / 寒色 / dark-first) と方向性衝突するため、および default の heading font-size 階層 (h5 = 本文サイズ / h6 < 本文サイズ) と Nord の階層が整合しないため。
 
 ## ファイル構成
 
-- `nord.css` — テーマ本体 (`@theme nord` ヘッダ + パレット + 配色)
+- `nord.css` — テーマ本体 (`@theme nord` ヘッダ + Nord パレット + 配色 + Marpit raw 上の装飾定義)
 - `build.ts` — esbuild ラッパ。`nord.css` → `dist/nord.css`
 - `deno.json` — ルートの Deno タスクと依存 (ビルドツールのみ)
 - `examples/` — 独立した Deno プロジェクト。Marp スライドのサンプル (Mermaid / Shiki / GitHub Alerts 統合)。Marp 関連の依存はここに集約。**mermaid のような theme 範囲外の機能** (公式 UMD bundle の inline 注入や `pre.mermaid` の装飾打ち消し) はすべて `examples/marp.config.mjs` 側に閉じる。`nord.css` は配色提供のみ
@@ -21,7 +23,7 @@ Marp 用 Nord テーマ。`nord.css` が `@import "default"` で Marp 標準テ�
 
 ## ビルド時の注意
 
-- esbuild の `external` に `"default"`, `"gaia"`, `"uncover"` を登録済み。これらは Marp 組込テーマ名で実ファイルではないので esbuild からは解決できない。新たに別の組込テーマを継承する場合はここに追加すること。
+- 組込テーマを継承しないため `@import` を持たない。新たに `@import "default"` 等を導入する場合は、esbuild が解決できない仮想モジュール名なので `build.ts` の `external` に登録する必要がある (例: `external: ["default", "gaia", "uncover"]`)。
 
 ## Lint / フォーマット
 
@@ -50,7 +52,6 @@ deno task --cwd ./examples build      # examples/dist/ に HTML/PDF/PPTX 出力
 
 - `examples/dist/slides.html` をブラウザで開いて視覚的に確認する。
 - HTML 内に `@theme nord` ヘッダと `:root { --nord0: #...; ... }` のパレット展開、`var(--nordN)` 参照が含まれていれば CSS 統合は成功。
-- `@import "default"` 行は HTML 出力には残らない (Marp が展開済みのため)。
 
 ## デザイン検証
 
@@ -65,12 +66,15 @@ deno task --cwd ./examples build      # examples/dist/ に HTML/PDF/PPTX 出力
    - 画像, KaTeX 数式, 水平線 (`<hr>`)
    - GitHub-style alerts (Note / Tip / Important / Warning / Caution)
    - Mermaid (Flowchart / Sequence / State / Class)
+   - 日本語の自動改行処理 (`word-break: auto-phrase` / `text-wrap: balance` / `text-wrap: pretty`) — 折り返しが発生する長さの日本語 heading と paragraph
 2. ルートで `deno task build` を実行して `dist/nord.css` を最新化する。
 3. `examples/` で `deno task build:image` を実行し、各スライドを PNG 化する。
 4. `examples/dist/png/slide.NNN.png` を 1 枚ずつ確認し、以下を見る:
    - スライド背景 (nord0) と elevated 要素 (nord1) のコントラスト差
    - リンク (nord8) と inline code (nord7) の区別
-   - 見出し階層の明度・サイズ差
+   - 見出し階層: h1 = nord8 (Frost primary) / h2 = nord9 (Frost secondary) / h3 = nord7 (Frost teal) / h4-h6 = nord6 (本文同色 + bold + 1.1em で本文と差別化)。h6 が本文より小さくならないこと
+   - スライド領域の上下中央寄せ (`place-content: safe center center`) が機能していること
+   - 日本語の長文 heading / paragraph が文節境界で折り返されていること
    - alerts 5 種のボーダー色 (Aurora の semantic 役割)
    - Mermaid 各 diagram の Nord 化が破綻していないか
 5. 配色問題があれば `nord.css` を修正し、ルートで再ビルド (`deno task build`) → 画像再生成 (`build:image`) のサイクルを回す。

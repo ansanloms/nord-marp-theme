@@ -4,7 +4,15 @@ import { contentType } from "@std/media-types";
 import { encodeBase64 } from "@std/encoding";
 import { escape as escapeHtml } from "@std/html";
 import Shiki from "@shikijs/markdown-it";
+import {
+  transformerMetaHighlight,
+  transformerMetaWordHighlight,
+  transformerNotationFocus,
+} from "@shikijs/transformers";
 import MarkdownItGitHubAlerts from "markdown-it-github-alerts";
+import MarkdownItTaskLists from "markdown-it-task-lists";
+import MarkdownItFootnote from "markdown-it-footnote";
+import markdownItFootnotePerSlide from "./plugins/markdown-it-footnote-per-slide.mjs";
 // 出力 HTML 末尾に <script> として inline 注入するソースと @ansanloms/nord-marp-theme
 // の CSS をすべて text import で取り込む。実行可能な .mjs / .min.js も含めて
 // `with { type: "text" }` を付けることで Deno が中身をパースせず文字列として
@@ -46,7 +54,20 @@ export default defineConfig({
 
     return marp
       .use(
-        await Shiki({ theme: "nord" }),
+        await Shiki({
+          theme: "nord",
+          // @shikijs/transformers の組み込み transformer:
+          //   - transformerMetaHighlight: ```ts {1,3-4} で行ハイライト
+          //   - transformerMetaWordHighlight: ```ts /word/ で語ハイライト
+          //   - transformerNotationFocus: // [!code focus] で行フォーカス
+          // 装飾 (.highlighted / .highlighted-word / .focused / .has-focused)
+          // は nord.css 側に閉じる。
+          transformers: [
+            transformerMetaHighlight(),
+            transformerMetaWordHighlight(),
+            transformerNotationFocus(),
+          ],
+        }),
       )
       .use((md) => {
         const defaultRender = md.renderer.rules.fence;
@@ -95,6 +116,9 @@ export default defineConfig({
           return defaultRender(tokens, idx, options, env, renderer);
         };
       })
-      .use(MarkdownItGitHubAlerts);
+      .use(MarkdownItGitHubAlerts)
+      .use(MarkdownItTaskLists)
+      .use(MarkdownItFootnote)
+      .use(markdownItFootnotePerSlide);
   },
 });

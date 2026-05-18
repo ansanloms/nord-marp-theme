@@ -1,7 +1,10 @@
 ---
-lang: en
+lang: ja
 title: nord-marp-theme
 author: ansanloms
+header: "**Nord** theme for _Marp_"
+footer: "<https://github.com/ansanloms/nord-marp-theme>"
+paginate: true
 ---
 
 # nord-marp-theme
@@ -24,7 +27,7 @@ author: ansanloms
 
 ---
 
-# Heading & Body
+# Heading & Body (h2-h3)
 
 ## Section heading
 
@@ -34,9 +37,21 @@ Body text under h2. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 
 Body text under h3. Used to verify that the body color does not overpower h3-h6 headings on a dark background.
 
+---
+
+# Heading & Body (h4-h6)
+
 #### Detail heading
 
 Body text under h4.
+
+##### Minor heading
+
+Body text under h5. Used to verify that h5 is still visually distinguishable from body text on a dark Nord background.
+
+###### Smallest heading
+
+Body text under h6. Used to verify that h6 does not become smaller than body text after dropping Marp's default theme.
 
 ---
 
@@ -52,11 +67,47 @@ _This is italic text._
 
 ---
 
+# 日本語の自動改行処理
+
+## バランスの取れた長い日本語の見出しで折り返しを確認するためのテストケース
+
+日本語の文章を含むスライドでは、ブラウザのデフォルトの改行ルールで処理すると文節の途中や助詞の前後で不自然な位置に改行が入ることがある。このテーマでは `word-break: auto-phrase` を heading と paragraph に適用しており、Chromium が文節単位で改行位置を推定して自然な折り返しを実現する。
+
+`text-wrap: balance` は heading 用に、`text-wrap: pretty` は paragraph 用に併用される。
+
+---
+
 # Inline elements
 
 A paragraph that mixes a [hyperlink](https://www.nordtheme.com/), some `inline code`, **bold**, _italic_, ~~strikethrough~~, and a keyboard shortcut <kbd>Ctrl</kbd> + <kbd>C</kbd>.
 
 Another line: see the [Nord docs](https://www.nordtheme.com/docs) and run `deno task build` after editing the theme.
+
+---
+
+# Footnote (slide 1)
+
+A paragraph with a footnote reference[^1]. Multiple footnotes[^2] can be placed in the same paragraph.
+
+Longer labels[^longer-label] are also supported, so verify that reference markers function as links.
+
+[^1]: First footnote on slide 1. The `a.footnote-backref` arrow links back to the reference.
+
+[^2]: Second footnote on slide 1.
+
+[^longer-label]: Long labels are renumbered in the rendered list.
+
+---
+
+# Footnote (slide 2)
+
+A separate slide can define its own footnotes[^slide2-a] independently.
+
+Across multiple slides, each slide's footnotes stay scoped[^slide2-b] to that slide.
+
+[^slide2-a]: Footnote on slide 2. Does not mix with footnotes from slide 1.
+
+[^slide2-b]: Second footnote on slide 2. Demonstrates per-slide isolation.
 
 ---
 
@@ -160,6 +211,47 @@ export default defineConfig({
     return marp;
   },
 });
+```
+
+---
+
+# Shiki: line highlight (`{N,M-K}`)
+
+Write line numbers like `{2,4-5}` after the language tag in a fence to apply the `.highlighted` class to those lines (`transformerMetaHighlight`).
+
+```javascript {2,4-5}
+const a = 1;
+const b = 2; // this line is highlighted
+const c = 3;
+const d = 4; // from here
+const e = 5; // ...to here
+```
+
+---
+
+# Shiki: word highlight (`/word/`)
+
+Write a word like `/sayHello/` after the language tag in a fence to wrap every occurrence in `.highlighted-word` (`transformerMetaWordHighlight`).
+
+```javascript /sayHello/
+const sayHello = (name) => {
+  console.log(`Hello ${name}`);
+};
+
+sayHello("John");
+```
+
+---
+
+# Shiki: line focus (`[!code focus]`)
+
+Add a `// [!code focus]` comment in the code to mark that line with `.focused`; the rest of the lines are dimmed via the `.has-focused` decoration (opacity + blur). (`transformerNotationFocus`)
+
+```javascript
+const a = 1;
+const b = 2;
+const c = a + b; // [!code focus]
+console.log(c);
 ```
 
 ---
