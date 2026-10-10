@@ -1,0 +1,22 @@
+{
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "clean": "rm -rf ./dist",
+    "build:html": "marp slides.md --config-file marp.config.mjs --output ./dist/slides.html",
+    "build:pdf": "marp slides.md --config-file marp.config.mjs --allow-local-files --pdf-outlines --output ./dist/slides.pdf",
+    "build:pptx": "marp slides.md --config-file marp.config.mjs --allow-local-files --pptx --output ./dist/slides.pptx",
+    "build:image": "marp slides.md --config-file marp.config.mjs --allow-local-files --images png --output ./dist/png/slide.png",
+    "watch": "marp slides.md --config-file marp.config.mjs --output ./dist/slides.html --watch",
+    "build": "npm run clean && npm run build:html && npm run build:pdf && npm run build:pptx && npm run build:image"
+  },
+  "dependencies": {
+    "@marp-team/marp-cli": "4.4.0",
+    "@shikijs/markdown-it": "4.0.2",
+    "@shikijs/transformers": "4.0.2",
+    "markdown-it-footnote": "4.0.0",
+    "markdown-it-github-alerts": "1.0.1",
+    "markdown-it-task-lists": "2.1.1",
+    "mermaid": "11.15.0"
+  }
+}

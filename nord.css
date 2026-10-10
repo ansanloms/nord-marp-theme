@@ -30,19 +30,10 @@
 
   /* Typography */
   --font-default:
-    "Inter",
-    "Helvetica Neue",
-    Arial,
-    "Hiragino Kaku Gothic ProN",
-    "Hiragino Sans",
-    "Noto Sans JP",
-    sans-serif;
+    "Inter", "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN",
+    "Hiragino Sans", "Noto Sans JP", sans-serif;
   --font-code:
-    "JetBrains Mono",
-    "Fira Code",
-    "Cascadia Code",
-    Consolas,
-    "Courier New",
+    "JetBrains Mono", "Fira Code", "Cascadia Code", Consolas, "Courier New",
     monospace;
 }
 

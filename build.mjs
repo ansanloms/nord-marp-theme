@@ -1,7 +1,7 @@
+import path from "node:path";
 import { build } from "esbuild";
-import * as path from "@std/path";
 
-const __dirname = path.dirname(path.fromFileUrl(import.meta.url));
+const __dirname = import.meta.dirname;
 
 try {
   await build({
@@ -18,5 +18,5 @@ try {
   console.log("Build complete!");
 } catch (err) {
   console.error(err);
-  Deno.exit(1);
+  process.exit(1);
 }

@@ -125,7 +125,9 @@ export default function markdownItFootnotePerSlide(md) {
     const hr = options.xhtmlOut
       ? '<hr class="footnotes-sep" />'
       : '<hr class="footnotes-sep">';
-    return `<section class="footnotes">\n${hr}\n` +
-      `<ol class="footnotes-list"${startAttr}>\n`;
+    return (
+      `<section class="footnotes">\n${hr}\n` +
+      `<ol class="footnotes-list"${startAttr}>\n`
+    );
   };
 }
