@@ -10,16 +10,17 @@ Marp 用 Nord テーマ。`nord.css` は Marp 組込テーマ (`default` / `gaia
 
 - `nord.css` — テーマ本体 (`@theme nord` ヘッダ + Nord パレット + 配色 + Marpit raw 上の装飾定義)
 - `build.mjs` — esbuild ラッパ。`nord.css` → `dist/nord.css`
-- `package.json` — ルートの npm scripts と devDependencies (esbuild / Biome。ビルドツールのみ)
-- `biome.json` — Biome の lint / format 設定
+- `package.json` — ルートの npm scripts と devDependencies (esbuild / oxlint / oxfmt。ビルド・lint・format ツールのみ)
+- `.oxlintrc.json` — oxlint の lint 設定 (correctness + curly)
+- `.oxfmtrc.json` — oxfmt の format 設定
 - `examples/` — 独立した npm プロジェクト (`package.json`)。Marp スライドのサンプル (Mermaid / Shiki / GitHub Alerts 統合)。Marp 関連の依存はここに集約。**mermaid のような theme 範囲外の機能** (公式 UMD bundle の inline 注入や `pre.mermaid` の装飾打ち消し) はすべて `examples/marp.config.mjs` 側に閉じる。`nord.css` は配色提供のみ
 - `dist/` — ビルド成果物 (生成物だがコミット対象)
 
 ## 主要コマンド
 
 - `npm run build` — `nord.css` をバンドル & minify
-- `npm run lint` — `biome check`
-- `npm run fix` — `biome check --write`
+- `npm run lint` — `oxlint --deny-warnings && oxfmt --check`
+- `npm run fix` — `oxlint --fix && oxfmt`
 
 ## ビルド時の注意
 
@@ -27,9 +28,9 @@ Marp 用 Nord テーマ。`nord.css` は Marp 組込テーマ (`default` / `gaia
 
 ## Lint / フォーマット
 
-- JS / TS / JSON / CSS は Biome (`biome check`) で lint と format を行う。設定は `biome.json`。
-- 除外: `dist/` (`biome.json` の `files.includes` で除外)。`examples/` はルートの `biome.json` で対象になる。
-- Markdown は自動整形しない。
+- lint は oxlint (`oxlint --deny-warnings`)、format は oxfmt (JS / TS / JSON / CSS / Markdown) で行う。設定は `.oxlintrc.json` と `.oxfmtrc.json`。
+- 除外: 各設定の `ignorePatterns` で指定する (`dist/`, `examples/dist/` 等)。`examples/` はルートの設定で対象になる。
+- `examples/slides.md` は oxfmt の対象外。デザイン検証のフィクスチャで、Markdown の書き方そのものが検証対象になる為。
 - CSS 用 stylelint は使っていない (旧 `.stylelintrc.js` は削除済み)。
 
 ## 動作確認

@@ -1,0 +1,12 @@
+{
+  "$schema": "./node_modules/oxfmt/configuration_schema.json",
+  "printWidth": 80,
+  "proseWrap": "preserve",
+  "ignorePatterns": [
+    "dist/**",
+    "examples/dist/**",
+    "examples/slides.md",
+    ".claude/**",
+    "node_modules/**"
+  ]
+}

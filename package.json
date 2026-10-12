@@ -3,16 +3,17 @@
   "version": "0.3.2",
   "type": "module",
   "main": "./index.mjs",
-  "engines": {
-    "node": ">=24"
-  },
   "scripts": {
     "build": "node build.mjs",
-    "lint": "biome check",
-    "fix": "biome check --write"
+    "lint": "oxlint --deny-warnings && oxfmt --check",
+    "fix": "oxlint --fix && oxfmt"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.5.15",
-    "esbuild": "0.28.0"
+    "esbuild": "0.28.0",
+    "oxfmt": "0.72.0",
+    "oxlint": "1.87.0"
+  },
+  "engines": {
+    "node": ">=24"
   }
 }
