@@ -37,10 +37,47 @@
     monospace;
 }
 
+/* Role tokens — which palette entry plays which part. Dark is the base;
+ * `section.light` (`<!-- class: light -->`) maps the same roles onto the
+ * Snow Storm ground. Contrast figures are WCAG 2 ratios against `--bg`. */
+section {
+  --bg: var(--nord0);
+  --surface: var(--nord1);
+  --surface-active: var(--nord2);
+  --line: var(--nord3);
+  --text: var(--nord6); /* 10.84:1 */
+  --text-muted: var(--nord5); /* 10.26:1 */
+  /* 9.25:1. Chrome at 16px needs 4.5:1; nord3 would be 1.69:1. */
+  --text-faint: var(--nord4);
+  --code: var(--nord7); /* 4.83:1 on --surface */
+  --accent: var(--nord8); /* 6.24:1 — the only Frost used as text */
+  --on-accent: var(--nord0);
+  --alert-note: var(--nord10);
+  --alert-tip: var(--nord14);
+  --alert-important: var(--nord15);
+  --alert-warning: var(--nord13);
+  --alert-caution: var(--nord11);
+
+  &.light {
+    --bg: var(--nord6);
+    --surface: var(--nord5);
+    --surface-active: var(--nord4);
+    --line: var(--nord4);
+    --text: var(--nord0); /* 10.84:1 */
+    --text-muted: var(--nord1); /* 8.73:1 */
+    --text-faint: var(--nord3); /* 6.4:1 */
+    /* 3.31:1 on --surface, large text (24px+) only. */
+    --code: var(--nord10);
+    /* 3.5:1, large text (24px+) only; nord8 would be 1.74:1. */
+    --accent: var(--nord10);
+    --on-accent: var(--nord6);
+  }
+}
+
 section {
   --marpit-root-font-size: 29px;
 
-  display: block;
+  display: flex;
   flex-flow: column nowrap;
   align-items: stretch;
   place-content: safe center center;
@@ -48,8 +85,8 @@ section {
   font-size: 29px;
   font-weight: 400;
   line-height: 1.5;
-  color: var(--nord6);
-  background-color: var(--nord0);
+  color: var(--text);
+  background-color: var(--bg);
   padding: 70px;
 
   /* 末尾要素の下マージンをリセット。blockquote / li / alert / table cell
@@ -67,7 +104,7 @@ section::after {
   bottom: 20px;
   margin: 0;
   padding: 0;
-  color: var(--nord3);
+  color: var(--text-faint);
   font-size: 0.6em;
 }
 
@@ -77,13 +114,19 @@ footer {
   left: 30px;
   right: 30px;
   margin: 0;
-  color: var(--nord3);
+  color: var(--text-faint);
   font-size: 0.55em;
-  opacity: 0.6;
 }
 
 header {
   top: 20px;
+}
+
+/* Links inside the chrome keep the chrome color: at 16px Frost does not
+ * reach 4.5:1 on the light ground (nord10 is 3.5:1). */
+header a,
+footer a {
+  color: inherit;
 }
 
 footer {
@@ -100,6 +143,7 @@ h6 {
   font-family: var(--font-default);
   font-weight: 600;
   line-height: 1.25;
+  color: var(--text);
   margin: 0.6em 0 0.4em;
   word-break: auto-phrase;
   text-wrap: balance;
@@ -113,24 +157,20 @@ h3:first-child {
 
 h1 {
   font-size: 1.8em;
-  color: var(--nord8);
 }
 
 h2 {
   font-size: 1.4em;
-  color: var(--nord9);
 }
 
 h3 {
   font-size: 1.2em;
-  color: var(--nord7);
 }
 
 h4,
 h5,
 h6 {
   font-size: 1.1em;
-  color: var(--nord6);
 }
 
 /* Paragraph */
@@ -142,7 +182,7 @@ p {
 
 /* Inline */
 a {
-  color: var(--nord8);
+  color: var(--accent);
   text-decoration: none;
   text-underline-offset: 0.2em;
 }
@@ -153,7 +193,7 @@ a:focus-visible {
 }
 
 strong {
-  color: var(--nord6);
+  color: var(--text);
   font-weight: 700;
 }
 
@@ -163,15 +203,15 @@ em {
 
 del,
 s {
-  color: var(--nord4);
+  color: var(--text-faint);
   text-decoration: line-through;
 }
 
 code {
   font-family: var(--font-code);
   font-size: 0.9em;
-  color: var(--nord7);
-  background-color: var(--nord1);
+  color: var(--code);
+  background-color: var(--surface);
   padding: 0.1em 0.35em;
   border-radius: 0.25em;
 }
@@ -181,9 +221,9 @@ kbd {
   font-family: var(--font-code);
   font-size: 0.85em;
   line-height: 1.4;
-  color: var(--nord6);
-  background-color: var(--nord2);
-  border: 1px solid var(--nord3);
+  color: var(--text);
+  background-color: var(--surface-active);
+  border: 1px solid var(--line);
   border-radius: 0.25em;
   padding: 0.1em 0.4em;
   vertical-align: middle;
@@ -194,8 +234,8 @@ pre {
   font-family: var(--font-code);
   font-size: 0.8em;
   line-height: 1.5;
-  color: var(--nord6);
-  background-color: var(--nord1);
+  color: var(--text);
+  background-color: var(--surface);
   border-radius: 0.4em;
   padding: 0.8em 1em;
   margin: 0 0 0.8em;
@@ -220,7 +260,7 @@ pre {
          * 出す手法は pre 側の padding 値に依存して text 位置がずれるため
          * 使わない。 */
         width: 100%;
-        background-color: color-mix(in srgb, var(--nord3) 50%, transparent);
+        background-color: color-mix(in srgb, var(--line) 50%, transparent);
       }
 
       & .highlighted-word {
@@ -244,8 +284,8 @@ pre {
 blockquote {
   margin: 0 0 0.8em;
   padding: 0.4em 1em;
-  border-left: 0.25em solid var(--nord3);
-  color: var(--nord5);
+  border-left: 0.25em solid var(--line);
+  color: var(--text-muted);
 
   & blockquote {
     margin-top: 0.4em;
@@ -254,7 +294,7 @@ blockquote {
 
 hr {
   border: 0;
-  background-color: var(--nord3);
+  background-color: var(--line);
   height: 1px;
   padding: 0;
   margin: 0.8em 0;
@@ -269,7 +309,7 @@ ol {
     margin: 0.15em 0;
 
     &::marker {
-      color: var(--nord3);
+      color: var(--line);
     }
 
     /* Task list (markdown-it-task-lists 出力) */
@@ -284,14 +324,14 @@ ol {
       margin: 0 0.4em 0 0;
       vertical-align: -0.15em;
       background-color: transparent;
-      border: 0.08em solid var(--nord3);
+      border: 0.08em solid var(--line);
       border-radius: 0.2em;
       position: relative;
       cursor: default;
 
       &:checked {
-        background-color: var(--nord8);
-        border-color: var(--nord8);
+        background-color: var(--accent);
+        border-color: var(--accent);
 
         &::after {
           content: "";
@@ -300,7 +340,7 @@ ol {
           left: 0.28em;
           width: 0.28em;
           height: 0.55em;
-          border: solid var(--nord0);
+          border: solid var(--on-accent);
           border-width: 0 0.14em 0.14em 0;
           transform: rotate(45deg);
         }
@@ -327,7 +367,7 @@ table {
     border: 0;
 
     &:nth-child(2n) {
-      background-color: var(--nord1);
+      background-color: var(--surface);
     }
   }
 
@@ -339,15 +379,14 @@ table {
     text-align: left;
     white-space: normal;
     overflow: visible;
-    color: var(--nord6);
+    color: var(--text);
     background-color: transparent;
     border: 0;
   }
 
   & th {
-    color: var(--nord8);
     font-weight: 600;
-    border-bottom: 2px solid var(--nord8);
+    border-bottom: 1px solid var(--accent);
   }
 }
 
@@ -369,7 +408,7 @@ sup.footnote-ref {
   left: 70px;
   right: 70px;
   font-size: 0.55em;
-  color: var(--nord4);
+  color: var(--text-faint);
   line-height: 1.4;
 
   & .footnotes-sep {
@@ -390,7 +429,7 @@ sup.footnote-ref {
   }
 
   & .footnote-backref {
-    color: var(--nord8);
+    color: inherit;
     text-decoration: none;
     margin-left: 0.3em;
   }
@@ -400,53 +439,41 @@ sup.footnote-ref {
 .markdown-alert {
   padding: 0.5em 1em;
   margin: 0.8em 0;
-  border-left: 0.25em solid var(--nord3);
-  background-color: var(--nord1);
+  border-left: 0.25em solid var(--line);
+  background-color: var(--surface);
 
   & .markdown-alert-title {
     display: flex;
     align-items: center;
     gap: 0.4em;
     font-weight: bold;
+    color: var(--text);
+
+    /* The octicon ships without a fill attribute and would paint black. */
+    & svg {
+      width: 1em;
+      height: 1em;
+      fill: currentColor;
+    }
   }
 
   &.markdown-alert-note {
-    border-left-color: var(--nord10);
-
-    & .markdown-alert-title {
-      color: var(--nord10);
-    }
+    border-left-color: var(--alert-note);
   }
 
   &.markdown-alert-tip {
-    border-left-color: var(--nord14);
-
-    & .markdown-alert-title {
-      color: var(--nord14);
-    }
+    border-left-color: var(--alert-tip);
   }
 
   &.markdown-alert-important {
-    border-left-color: var(--nord15);
-
-    & .markdown-alert-title {
-      color: var(--nord15);
-    }
+    border-left-color: var(--alert-important);
   }
 
   &.markdown-alert-warning {
-    border-left-color: var(--nord13);
-
-    & .markdown-alert-title {
-      color: var(--nord13);
-    }
+    border-left-color: var(--alert-warning);
   }
 
   &.markdown-alert-caution {
-    border-left-color: var(--nord11);
-
-    & .markdown-alert-title {
-      color: var(--nord11);
-    }
+    border-left-color: var(--alert-caution);
   }
 }
