@@ -81,7 +81,7 @@ _This is italic text._
 
 A paragraph that mixes a [hyperlink](https://www.nordtheme.com/), some `inline code`, **bold**, _italic_, ~~strikethrough~~, and a keyboard shortcut <kbd>Ctrl</kbd> + <kbd>C</kbd>.
 
-Another line: see the [Nord docs](https://www.nordtheme.com/docs) and run `deno task build` after editing the theme.
+Another line: see the [Nord docs](https://www.nordtheme.com/docs) and run `npm run build` after editing the theme.
 
 ---
 

@@ -1,33 +1,54 @@
+import { readFileSync } from "node:fs";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 import { defineConfig } from "@marp-team/marp-cli";
-import * as path from "@std/path";
-import { contentType } from "@std/media-types";
-import { encodeBase64 } from "@std/encoding";
-import { escape as escapeHtml } from "@std/html";
 import Shiki from "@shikijs/markdown-it";
 import {
   transformerMetaHighlight,
   transformerMetaWordHighlight,
   transformerNotationFocus,
 } from "@shikijs/transformers";
+import MarkdownItFootnote from "markdown-it-footnote";
 import MarkdownItGitHubAlerts from "markdown-it-github-alerts";
 import MarkdownItTaskLists from "markdown-it-task-lists";
-import MarkdownItFootnote from "markdown-it-footnote";
 import markdownItFootnotePerSlide from "./plugins/markdown-it-footnote-per-slide.mjs";
-// 出力 HTML 末尾に <script> として inline 注入するソースと @ansanloms/nord-marp-theme
-// の CSS をすべて text import で取り込む。実行可能な .mjs / .min.js も含めて
-// `with { type: "text" }` を付けることで Deno が中身をパースせず文字列として
-// 渡すため、Deno のモジュール解決とキャッシュに乗る。
+
+// 出力 HTML 末尾に <script> として inline 注入するソースを fs で読み込む。
 //   - mermaid 公式 UMD bundle (dynamic chunk 込みの単一ファイル)。これにより
 //     PNG/PDF 化を担う Chromium がブラウザ実 DOM 上で mermaid を render するため、
 //     SSR (jsdom/svgdom) 由来のレイアウト計算ズレを根本回避できる
 //   - ブラウザ側で mermaid を制御するスクリプト (Nord パレット / MermaidConfig /
 //     sandbox 経由 render を内包)
-import mermaidBundleSource from "mermaid/dist/mermaid.min.js" with {
-  type: "text",
+const mermaidBundleSource = readFileSync(
+  fileURLToPath(import.meta.resolve("mermaid/dist/mermaid.min.js")),
+  "utf8",
+);
+const mermaidScriptSource = readFileSync(
+  path.join(import.meta.dirname, "assets/scripts/mermaid.mjs"),
+  "utf8",
+);
+
+const contentTypes = {
+  ".png": "image/png",
+  ".jpg": "image/jpeg",
+  ".jpeg": "image/jpeg",
+  ".gif": "image/gif",
+  ".svg": "image/svg+xml",
+  ".webp": "image/webp",
 };
-import mermaidScriptSource from "./assets/scripts/mermaid.mjs" with {
-  type: "text",
-};
+
+function contentType(ext) {
+  return contentTypes[ext.toLowerCase()];
+}
+
+function escapeHtml(s) {
+  return s
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#39;");
+}
 
 export default defineConfig({
   theme: "../dist/nord.css",
@@ -47,7 +68,8 @@ export default defineConfig({
     const baseRender = marp.render.bind(marp);
     marp.render = (markdown, env) => {
       const result = baseRender(markdown, env);
-      result.html += `<script>${mermaidBundleSource}</script>` +
+      result.html +=
+        `<script>${mermaidBundleSource}</script>` +
         `<script>${mermaidScriptSource}</script>`;
       return result;
     };
@@ -72,13 +94,7 @@ export default defineConfig({
       .use((md) => {
         const defaultRender = md.renderer.rules.fence;
 
-        md.renderer.rules.fence = (
-          tokens,
-          idx,
-          options,
-          env,
-          renderer,
-        ) => {
+        md.renderer.rules.fence = (tokens, idx, options, env, renderer) => {
           const token = tokens[idx];
           const lang = token.info.trim();
 
@@ -106,10 +122,10 @@ export default defineConfig({
           // (絶対パスならそのまま使われる)。これで本 config を外部から
           // import しても、画像は呼び出し元プロジェクトの slides.md 配下
           // から自然に拾える。
-          const content = encodeBase64(Deno.readFileSync(path.resolve(src)));
-          const dataUri = `data:${
-            contentType(path.extname(src))
-          };base64,${content}`;
+          const content = readFileSync(path.resolve(src)).toString("base64");
+          const dataUri = `data:${contentType(
+            path.extname(src),
+          )};base64,${content}`;
 
           token.attrs[srcIndex][1] = dataUri;
 

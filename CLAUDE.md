@@ -9,35 +9,37 @@ Marp 用 Nord テーマ。`nord.css` は Marp 組込テーマ (`default` / `gaia
 ## ファイル構成
 
 - `nord.css` — テーマ本体 (`@theme nord` ヘッダ + Nord パレット + 配色 + Marpit raw 上の装飾定義)
-- `build.ts` — esbuild ラッパ。`nord.css` → `dist/nord.css`
-- `deno.json` — ルートの Deno タスクと依存 (ビルドツールのみ)
-- `examples/` — 独立した Deno プロジェクト。Marp スライドのサンプル (Mermaid / Shiki / GitHub Alerts 統合)。Marp 関連の依存はここに集約。**mermaid のような theme 範囲外の機能** (公式 UMD bundle の inline 注入や `pre.mermaid` の装飾打ち消し) はすべて `examples/marp.config.mjs` 側に閉じる。`nord.css` は配色提供のみ
+- `build.mjs` — esbuild ラッパ。`nord.css` → `dist/nord.css`
+- `package.json` — ルートの npm scripts と devDependencies (esbuild / oxlint / oxfmt。ビルド・lint・format ツールのみ)
+- `.oxlintrc.json` — oxlint の lint 設定 (correctness + curly)
+- `.oxfmtrc.json` — oxfmt の format 設定
+- `examples/` — 独立した npm プロジェクト (`package.json`)。Marp スライドのサンプル (Mermaid / Shiki / GitHub Alerts 統合)。Marp 関連の依存はここに集約。**mermaid のような theme 範囲外の機能** (公式 UMD bundle の inline 注入や `pre.mermaid` の装飾打ち消し) はすべて `examples/marp.config.mjs` 側に閉じる。`nord.css` は配色提供のみ
 - `dist/` — ビルド成果物 (生成物だがコミット対象)
 
 ## 主要コマンド
 
-- `deno task build` — `nord.css` をバンドル & minify
-- `deno task lint` — `deno lint && deno fmt --check`
-- `deno task fix` — `deno lint --fix && deno fmt`
-- `deno task check` — TypeScript 型チェック
+- `npm run build` — `nord.css` をバンドル & minify
+- `npm run lint` — `oxlint --deny-warnings && oxfmt --check`
+- `npm run fix` — `oxlint --fix && oxfmt`
 
 ## ビルド時の注意
 
-- 組込テーマを継承しないため `@import` を持たない。新たに `@import "default"` 等を導入する場合は、esbuild が解決できない仮想モジュール名なので `build.ts` の `external` に登録する必要がある (例: `external: ["default", "gaia", "uncover"]`)。
+- 組込テーマを継承しないため `@import` を持たない。新たに `@import "default"` 等を導入する場合は、esbuild が解決できない仮想モジュール名なので `build.mjs` の `external` に登録する必要がある (例: `external: ["default", "gaia", "uncover"]`)。
 
 ## Lint / フォーマット
 
-- TS / 設定ファイルは `deno fmt` + `deno lint` のみ。
-- 除外: `dist/`, `examples/` (`deno.json` の `exclude`)。
+- lint は oxlint (`oxlint --deny-warnings`)、format は oxfmt (JS / TS / JSON / CSS / Markdown) で行う。設定は `.oxlintrc.json` と `.oxfmtrc.json`。
+- 除外: 各設定の `ignorePatterns` で指定する (`dist/`, `examples/dist/` 等)。`examples/` はルートの設定で対象になる。
+- `examples/slides.md` は oxfmt の対象外。デザイン検証のフィクスチャで、Markdown の書き方そのものが検証対象になる為。
 - CSS 用 stylelint は使っていない (旧 `.stylelintrc.js` は削除済み)。
 
 ## 動作確認
 
-`examples/` はルートとは独立した Deno プロジェクト (独自の `deno.json` / `marp.config.mjs` を持つ)。`dist/nord.css` を読み込んで Marp スライドを 4 形式で生成できる。
+`examples/` はルートとは独立した npm プロジェクト (独自の `package.json` / `marp.config.mjs` を持つ)。`dist/nord.css` を読み込んで Marp スライドを 4 形式で生成できる。
 
 ```sh
-deno task build                       # まずルートで dist/nord.css を更新
-deno task --cwd ./examples build      # examples/dist/ に HTML/PDF/PPTX 出力
+npm run build                         # まずルートで dist/nord.css を更新
+npm --prefix ./examples run build     # examples/dist/ に HTML/PDF/PPTX 出力
 ```
 
 出力形式:
@@ -67,8 +69,8 @@ deno task --cwd ./examples build      # examples/dist/ に HTML/PDF/PPTX 出力
    - GitHub-style alerts (Note / Tip / Important / Warning / Caution)
    - Mermaid (Flowchart / Sequence / State / Class)
    - 日本語の自動改行処理 (`word-break: auto-phrase` / `text-wrap: balance` / `text-wrap: pretty`) — 折り返しが発生する長さの日本語 heading と paragraph
-2. ルートで `deno task build` を実行して `dist/nord.css` を最新化する。
-3. `examples/` で `deno task build:image` を実行し、各スライドを PNG 化する。
+2. ルートで `npm run build` を実行して `dist/nord.css` を最新化する。
+3. ルートで `npm --prefix ./examples run build:image` を実行し、各スライドを PNG 化する。
 4. `examples/dist/png/slide.NNN.png` を 1 枚ずつ確認し、以下を見る:
    - スライド背景 (nord0) と elevated 要素 (nord1) のコントラスト差
    - リンク (nord8) と inline code (nord7) の区別
@@ -77,7 +79,7 @@ deno task --cwd ./examples build      # examples/dist/ に HTML/PDF/PPTX 出力
    - 日本語の長文 heading / paragraph が文節境界で折り返されていること
    - alerts 5 種のボーダー色 (Aurora の semantic 役割)
    - Mermaid 各 diagram の Nord 化が破綻していないか
-5. 配色問題があれば `nord.css` を修正し、ルートで再ビルド (`deno task build`) → 画像再生成 (`build:image`) のサイクルを回す。
+5. 配色問題があれば `nord.css` を修正し、ルートで再ビルド (`npm run build`) → 画像再生成 (`build:image`) のサイクルを回す。
 
 ### Nord 公式階層のチェックリスト
 

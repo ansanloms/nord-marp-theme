@@ -1,0 +1,19 @@
+{
+  "name": "nord-marp-theme",
+  "version": "0.3.2",
+  "type": "module",
+  "main": "./index.mjs",
+  "scripts": {
+    "build": "node build.mjs",
+    "lint": "oxlint --deny-warnings && oxfmt --check",
+    "fix": "oxlint --fix && oxfmt"
+  },
+  "devDependencies": {
+    "esbuild": "0.28.0",
+    "oxfmt": "0.72.0",
+    "oxlint": "1.87.0"
+  },
+  "engines": {
+    "node": ">=24"
+  }
+}
