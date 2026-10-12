@@ -2,7 +2,7 @@
 
 ## リポジトリ概要
 
-Marp 用 Nord テーマ。`nord.css` は Marp 組込テーマ (`default` / `gaia` / `uncover`) を継承せず、Marpit プリミティブの上に section / heading / paragraph / list / table / code / pre / blockquote / hr / kbd / 画像 / GFM alerts を直接定義する単一 CSS テーマ。`:root` に Nord パレット 16 色を Custom Properties で展開した上で配色を当てる。esbuild で minify した `dist/nord.css` を成果物として配布する。利用側は `dist/nord.css` を直接参照する。
+Marp 用 Nord テーマ。`nord.css` は Marp 組込テーマ (`default` / `gaia` / `uncover`) を継承せず、Marpit プリミティブの上に section / heading / paragraph / list / table / code / pre / blockquote / hr / kbd / 画像 / GFM alerts を直接定義する単一 CSS テーマ。`:root` に Nord パレット 16 色を Custom Properties で展開し、`section` 上で役割トークン (`--bg` / `--surface` / `--line` / `--text` / `--text-faint` / `--accent` / `--alert-*` 等) に割り当てて配色する。装飾ルールは役割トークンだけを参照し、`--nordN` を直接参照しない (例外: `.highlighted-word` の nord13 wash)。`section.light` (`<!-- class: light -->`) は同じ役割を Snow Storm 側へ写像する light テーマ。esbuild で minify した `dist/nord.css` を成果物として配布する。利用側は `dist/nord.css` を直接参照する。
 
 組込テーマを継承しない理由は、light-first な GitHub markdown 由来の CSS (`--bgColor-default` / `--fgColor-default` 等の light/dark 切替変数や h1 / h2 の `border-bottom`) が Nord (ミニマル / 寒色 / dark-first) と方向性衝突するため、および default の heading font-size 階層 (h5 = 本文サイズ / h6 < 本文サイズ) と Nord の階層が整合しないため。
 
@@ -73,11 +73,13 @@ npm --prefix ./examples run build     # examples/dist/ に HTML/PDF/PPTX 出力
 3. ルートで `npm --prefix ./examples run build:image` を実行し、各スライドを PNG 化する。
 4. `examples/dist/png/slide.NNN.png` を 1 枚ずつ確認し、以下を見る:
    - スライド背景 (nord0) と elevated 要素 (nord1) のコントラスト差
-   - リンク (nord8) と inline code (nord7) の区別
-   - 見出し階層: h1 = nord8 (Frost primary) / h2 = nord9 (Frost secondary) / h3 = nord7 (Frost teal) / h4-h6 = nord6 (本文同色 + bold + 1.1em で本文と差別化)。h6 が本文より小さくならないこと
+   - リンク (`--accent` = nord8) と inline code (`--code` = nord7) の区別
+   - 見出し階層: h1 〜 h6 はすべて `--text` (nord6)。階層はサイズ (1.8 / 1.4 / 1.2 / 1.1em) と weight 600 のみで表す。Frost を見出し色に使わない (h1 と link が同色になり、見出しが本文より暗くなる)。h6 が本文より小さくならないこと
+   - header / footer / ページ番号 / footnote (`--text-faint` = nord4) が読めること。16px 前後のテキストには 4.5:1 が必要で、nord3 (1.69:1) や opacity による減光は使わない。chrome 内のリンクは chrome 色を継承する
+   - `class: light` のスライドで地 / 文字 / surface / rule が反転し、link が nord10 になること。Frost は明背景で 4.5:1 に届かない (nord10 で 3.5:1) ため、29px 本文 (large text、3:1) でのみ許容する。Shiki の構文色は dark 用のままなので、light スライドにコードブロックを置く場合は examples 側で Shiki の light テーマを検討する
    - スライド領域の上下中央寄せ (`place-content: safe center center`) が機能していること
    - 日本語の長文 heading / paragraph が文節境界で折り返されていること
-   - alerts 5 種のボーダー色 (Aurora の semantic 役割)
+   - alerts 5 種のボーダー色 (`--alert-*`、Aurora の semantic 役割)。タイトル文字は `--text`、octicon は `currentColor` で塗られていること
    - Mermaid 各 diagram の Nord 化が破綻していないか
 5. 配色問題があれば `nord.css` を修正し、ルートで再ビルド (`npm run build`) → 画像再生成 (`build:image`) のサイクルを回す。
 
@@ -87,7 +89,7 @@ npm --prefix ./examples run build     # examples/dist/ に HTML/PDF/PPTX 出力
 
 - **Polar Night** (nord0 〜 3): 背景 = nord0 が原点、elevated UI (panel / card / table cell) = nord1、active line / selection = nord2、subtle guide / comment = nord3。背景階層を逆転させない。
 - **Snow Storm** (nord4 〜 6): nord6 が dark designs の prominent UI text、nord5 は subtle text、nord4 は caret や弱めのテキスト。
-- **Frost** (nord7 〜 10): nord8 が primary accent、nord9 が secondary。装飾色として使い、semantic な意味づけ (エラー / 警告 等) には使わない。
+- **Frost** (nord7 〜 10): nord8 が primary accent、nord9 が secondary。このテーマでは文字色としての Frost を `--accent` (link / checked box / table header rule) と `--code` (inline code) に限定し、見出しの階層表現には使わない。semantic な意味づけ (エラー / 警告 等) にも使わない。
 - **Aurora** (nord11 〜 15): semantic 役割が固定。nord11 = error (赤)、nord12 = annotation (橙)、nord13 = warning (黄)、nord14 = success (緑)、nord15 = numeric (紫)。装飾用途で流用しない。
 
 ## パレット出典

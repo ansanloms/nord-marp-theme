@@ -85,6 +85,21 @@ Another line: see the [Nord docs](https://www.nordtheme.com/docs) and run `npm r
 
 ---
 
+<!-- _class: light -->
+
+# Light theme (`class: light`)
+
+A paragraph with a [hyperlink](https://www.nordtheme.com/), `inline code`, **bold** and <kbd>Ctrl</kbd> + <kbd>C</kbd>.
+
+> [!WARNING]
+> Frost on a light ground stays above 3:1 only at body size (29px). Keep links out of the 16px chrome.
+
+| Option | Description |
+| ------ | ----------- |
+| hoge   | Lorem ipsum |
+
+---
+
 # Footnote (slide 1)
 
 A paragraph with a footnote reference[^1]. Multiple footnotes[^2] can be placed in the same paragraph.
